@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <h1>Tinder for education</h1>
+   <h1>Match and Learn</h1>
+    {% if user.is_authenticated %}
+        <h2>Welcome, {{ user.username }}!</h2>
+        <a href="{% url 'tinder:logout' %}">logout</a>
+      {% else %}
+        <h2>Welcome, Anonymous!</h2>
+        <a href="{% url 'tinder:login' %}">login</a> / <a href="{% url 'tinder:signup' %}">signup</a>
+      {% endif %}
    <p>search</p>
     <form method="POST">
         <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
