@@ -16,7 +16,7 @@ class Userinfo(models.Model):
 
     good_subject = models.ManyToManyField(Subject, related_name='Userinfos')
     def __str__(self):
-        return self.good_subject
+        return self.name
 
 
 from django.db import models
