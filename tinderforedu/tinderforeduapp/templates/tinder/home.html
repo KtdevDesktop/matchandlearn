@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <h1>Tinder for education</h1>
+   <p>search</p>
+    <form method="POST">
+        <input name="subject_find" id="id_new_item" placeholder="Enter a subject" />
+        <input type="submit" value="search">
+        {% csrf_token %}
+    </form>
+</head>
+<body>
+{% for user in User %}
+    <a href="/tinderforeduapp/{{ user.id }}/your_subject">good subject</a>
+{% endfor %}
+</body>
+</html>

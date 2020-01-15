@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <h1>Enter your good subject</h1>
+     <h1>{{ name.name }}</h1>
+</head>
+    <form method="POST">
+        <input name="subject_good" id="subject_good_id" placeholder="Enter a subject" />
+        <input type="submit" value="add">
+        {% csrf_token %}
+    </form>
+
+<body>
+    <table id="good_subject_table">
+    {% for subject_name in subject %}
+        <tr><td>{{ forloop.counter }}: {{ subject_name }}</td></tr>
+    {% endfor %}
+    </table>
+     <form>
+         <input name="edit_good_subject" id="edit_good_subject_id" type="submit" value = "edit">
+     </form>
+
+</body>
+</html>
