@@ -13,16 +13,13 @@
 <body>
     <table id="good_subject_table">
     <form action="{% url 'tinder:select_delete' name.id %}" method="post">
-    {% for subject_name in subject %}
-       <tr><td><input type="checkbox" name = "{{ subject_name }}" id="{{ subject_name }}"  value="{{ subject_name }}">
-           <p>{{ forloop.counter }}: {{ subject_name }}</p></td></tr>
+    {% for subject_name in subject.all %}
+        <tr><td><input type="checkbox" name="subject_list" id="subject_name{{ forloop.counter }}" value="{{ subject_name.id }}"><label for="subject_name{{ forloop.counter }}">{{ subject_name }}</label></td></tr>
     {% endfor %}
-        <input name="delete_good_subject" id="delete_good_subject_id" type="submit" value = "delete">
+        <input type="submit" value = "remove">
+         {% csrf_token %}
     </form>
     </table>
-     <form>
-         <input name="edit_good_subject" id="edit_good_subject_id" type="submit" value = "edit">
-     </form>
-
+    <p>{{ index }}</p>
 </body>
 </html>

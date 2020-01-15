@@ -14,11 +14,9 @@ class Subject(models.Model):
 class Userinfo(models.Model):
     name = models.TextField(max_length=200, blank=True)
 
-    good_subject = models.ManyToManyField(Subject, related_name='Userinfos')
+    good_subject = models.ManyToManyField(Subject)
     def __str__(self):
         return self.name
 
-
-from django.db import models
 
 # Create your models here.
