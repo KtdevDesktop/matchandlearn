@@ -1,11 +1,8 @@
 from django.urls import path
-
-from .  import views
-
+from . import views
 from django.conf.urls import url
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
-
 from . import views as core_views
 
 app_name = 'tinder'
@@ -15,6 +12,6 @@ urlpatterns = [
     path('<int:user_id>/your_subject/', views.select_delete, name ='select_delete'),
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(next_page='/tinderforeduapp/'), name="logout"),
-    url(r'^signup/$', core_views.signup, name='signup'),
-    path('signup/home.html', views.home_page, name='home')
+    path("signup/", core_views.signup, name='signup'),
+    path('signup/home.html',views.redirect, name='redirect')
 ]

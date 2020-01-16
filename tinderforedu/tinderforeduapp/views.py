@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from .models import Userinfo, Subject
 from django.contrib.auth.models import User
 
@@ -12,8 +13,8 @@ from django.contrib.auth.models import User
 @login_required
 def home(request):
     return render(request, 'tinder/home.html')
-
-
+def redirect(request):
+    return HttpResponseRedirect("/")
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
