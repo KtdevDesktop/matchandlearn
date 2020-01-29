@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Match-and-Learn</title>
-    <h1>Match and Learn</h1>
+    <h1>Match and Learn {{ User1 }}</h1>
     {% if user.is_authenticated %}
         <h2>Welcome, {{ user.username }}!</h2>
         <a href="{% url 'tinder:logout' %}">logout</a>

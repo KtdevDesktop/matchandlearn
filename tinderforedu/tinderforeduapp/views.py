@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-
+from .forms import SignUpForm
 from .models import Userinfo, Subject
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
@@ -18,16 +18,22 @@ def home(request):
 
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.first_name = form.cleaned_data.get('first_name')
+            user.profile.last_name = form.cleaned_data.get('last_name')
+            user.profile.email = form.cleaned_data.get('email')
+            user.profile.college = form.cleaned_data.get('college')
+            user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect('home.html')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'tinder/signup.html', {'form': form})
 def your_subject_page(request,user_id):
     if request.POST.get('subject_good'):
