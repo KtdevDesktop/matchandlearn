@@ -33,7 +33,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('http://127.0.0.1:8001/tinderforeduapp/login')
+            return redirect('/tinderforeduapp/login')
     else:
         form = SignUpForm()
     return render(request, 'tinder/signup.html', {'form': form})
