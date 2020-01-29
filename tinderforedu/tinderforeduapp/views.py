@@ -26,6 +26,7 @@ def signup(request):
             user.profile.last_name = form.cleaned_data.get('last_name')
             user.profile.email = form.cleaned_data.get('email')
             user.profile.college = form.cleaned_data.get('college')
+            Userinfo.objects.create(name=user.profile.first_name, school=user.profile.college)
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
