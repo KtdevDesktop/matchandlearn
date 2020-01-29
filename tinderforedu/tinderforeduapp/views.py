@@ -10,10 +10,21 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 # Create your views here.
+from django.urls import reverse
 
-@login_required
-def home(request):
-    return render(request, 'tinder/home.html')
+from .models import Userinfo, Subject
+def select_delete(request,user_id):
+    User1 = Userinfo.objects.get(id=user_id)
+    modelget = get_object_or_404(Userinfo, id=user_id)
+    num = request.POST.getlist("subject_list")
+    if len(num) == 0:
+        pass
+    else :
+        for i in num:
+            select = modelget.good_subject.get(pk=i)
+            select.delete()
+
+    return HttpResponseRedirect(reverse('tinder:your_subject', args=(User1.id,)))
 
 
 def signup(request):
