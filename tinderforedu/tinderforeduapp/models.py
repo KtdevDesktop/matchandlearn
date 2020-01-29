@@ -13,7 +13,8 @@ class Subject(models.Model):
 
 class Userinfo(models.Model):
     name = models.TextField(max_length=200, blank=True)
-
+    age = models.TextField(max_length=10,blank=True)
+    school = models.TextField(max_length=200,blank=True)
     good_subject = models.ManyToManyField(Subject, related_name='Userinfos')
     def __str__(self):
         return self.name
