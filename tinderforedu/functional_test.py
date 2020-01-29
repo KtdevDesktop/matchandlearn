@@ -62,7 +62,7 @@ class NewVisitorTest(unittest.TestCase):
 
 
 
-
+'''
 class signUp(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -110,13 +110,21 @@ class signUp(unittest.TestCase):
         inputbox_username.send_keys('Edith')
 
         # She types "123456" into Password text box
-        inputbox_password.send_keys('123456')
+        inputbox_password.send_keys('qwertyuiop[]')
 
         # She types "123456" again into Password confirmation text box
-        inputbox_passwordconfirm.send_keys('123456')
-
-
+        inputbox_passwordconfirm.send_keys('qwertyuiop[]')
+        input_first_name = self.browser.find_element_by_id("id_first_name")
+        input_first_name.send_keys("tu")
+        input_last_name = self.browser.find_element_by_id("id_last_name")
+        input_last_name.send_keys("pobthorn")
+        input_age = self.browser.find_element_by_id("id_age")
+        input_age.send_keys('50')
+        input_email = self.browser.find_element_by_id("id_email")
+        input_email.send_keys("ragr@gmail.com")
+        input_college = self.browser.find_element_by_id("id_college")
         # then she notices Sign up button and click it
+        input_college.send_keys('kmuntb')
         signup_button = self.browser.find_element_by_id('id_signup')
         self.assertEqual(
         signup_button.get_attribute('type'),
@@ -127,8 +135,8 @@ class signUp(unittest.TestCase):
         time.sleep(10)
 
 
-'''
-class YourSubject(unittest.TestCase):
+
+"""class YourSubject(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
 
@@ -216,6 +224,6 @@ class YourSubject(unittest.TestCase):
 
 
 
-
+"""
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

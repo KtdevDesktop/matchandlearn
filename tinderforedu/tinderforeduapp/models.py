@@ -14,6 +14,8 @@ class Subject(models.Model):
 
 class Userinfo(models.Model):
     name = models.TextField(max_length=200, blank=True)
+    fullname = models.TextField(max_length=200, blank=True)
+    lastname = models.TextField(max_length=200, blank=True)
     age = models.TextField(max_length=10,blank=True)
     school = models.TextField(max_length=200,blank=True)
     good_subject = models.ManyToManyField(Subject, related_name='Userinfos')
@@ -27,6 +29,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     college = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=150)
+    age = models.TextField(max_length=10, blank=True)
     bio = models.TextField()
 
     def __str__(self):

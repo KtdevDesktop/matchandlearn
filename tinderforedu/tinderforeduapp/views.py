@@ -26,24 +26,28 @@ def signup(request):
             user.profile.last_name = form.cleaned_data.get('last_name')
             user.profile.email = form.cleaned_data.get('email')
             user.profile.college = form.cleaned_data.get('college')
-            Userinfo.objects.create(name=user.profile.first_name, school=user.profile.college)
+            user.profile.age = form.cleaned_data.get('age')
+            Userinfo.objects.create(name=user.username, school=user.profile.college, age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name)
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('home.html')
+            return redirect('http://127.0.0.1:8001/tinderforeduapp/login')
     else:
         form = SignUpForm()
     return render(request, 'tinder/signup.html', {'form': form})
 def your_subject_page(request,user_id):
     if request.POST.get('subject_good'):
         subject = Subject.objects.create(subject_name=request.POST['subject_good'])
-        U1=Userinfo.objects.get(name="pakkapure")
+        U1=Userinfo.objects.get(name=request.user.username)
         U1.good_subject.add(subject)
         U1.save()
-        return render(request, 'tinder/your_subject.html', {'name': Userinfo.objects.get(name="pakkapure"),'subject': Userinfo.objects.get(name="pakkapure").good_subject.all()})
-    return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(name="pakkapure"),'subject': Userinfo.objects.get(name="pakkapure").good_subject.all()})
+        return render(request, 'tinder/your_subject.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
+    return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
+def successlogin(request):
+    if request.POST.get('login'):
+        return render(request, 'tinder/home.html', {'name': Userinfo.objects.get(name="pakkapure") })
 def home_page(request):
     if not Userinfo.objects.filter(name="pakkapure").exists():
         Userinfo.objects.create(name="pakkapure",age="18",school="king mongkut's university of technology north bangkok")

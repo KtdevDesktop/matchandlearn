@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <h1>Enter your good subject</h1>
-     <h2>name :{{ name.name }}</h2>
+     <h2>id :{{ name.name }}</h2>
+    <p id="fullname_id">First name: {{ name.fullname }}</p>
+    <p id="lastname_id">Last name: {{ name.lastname }}</p>
     <p id="age_id">age: {{ name.age }}</p>
      <p id="school_id">school: {{name.school }}</p>
 </head>
@@ -11,17 +13,17 @@
         <input name="add_button" type="submit" value="add">
         {% csrf_token %}
     </form>
-
 <body>
     <table id="good_subject_table">
     <form action="{% url 'tinder:select_delete' name.id %}" method="post">
     {% for subject_name in subject.all %}
         <tr><td><input type="checkbox" name="subject_list" id="subject_name:{{ forloop.counter }}" value="{{ subject_name.id }}"><label for="subject_name{{ forloop.counter }}">{{ forloop.counter }}: {{ subject_name }}</label></td></tr>
     {% endfor %}
+
         <input id = "remove_button_id" name="remove_button" type="submit" value = "remove">
          {% csrf_token %}
     </form>
-
     </table>
+<a href="{% url 'tinder:home' %}">go back to home</a>
 </body>
 </html>

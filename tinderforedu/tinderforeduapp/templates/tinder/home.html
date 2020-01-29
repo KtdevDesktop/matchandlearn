@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% if user.is_authenticated %}
     <title>Match-and-Learn</title>
     <h1>Match and Learn {{ User1 }}</h1>
-    {% if user.is_authenticated %}
-        <h2>Welcome, {{ user.username }}!</h2>
-        <a href="{% url 'tinder:logout' %}">logout</a>
-      {% else %}
-        <h2>Welcome, Guest!</h2>
-        <a href="{% url 'tinder:login' %}">login</a> / <a href="{% url 'tinder:signup' %}">signup</a>
-      {% endif %}
+    <a href="{% url 'tinder:logout' %}">logout</a>
    <p>search for some one you're looking for</p>
     <form method="POST">
         <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
@@ -27,5 +22,9 @@
 {% if user.is_authenticated %}
 <a href="/tinderforeduapp/{{ name.id }}/your_subject">good subject</a>
 {% endif %}
+    {% else %}
+        <h2>pls login first</h2>
+        <meta http-equiv="Refresh" content="3; url=/tinderforeduapp/login/" />
+    {% endif %}
 </body>
 </html>
