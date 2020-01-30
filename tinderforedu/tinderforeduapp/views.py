@@ -47,16 +47,16 @@ def your_subject_page(request,user_id):
     return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
 def successlogin(request):
     if request.POST.get('login'):
-        return render(request, 'tinder/home.html', {'name': Userinfo.objects.get(name="pakkapure") })
+        return render(request, 'tinder/home.html', {'name': request.user.username })
+def another_profile(request,user_id):
+    modelget = get_object_or_404(Userinfo,id=user_id)
+    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all()})
 def home_page(request):
-    if not Userinfo.objects.filter(name="pakkapure").exists():
-        Userinfo.objects.create(name="pakkapure",age="18",school="king mongkut's university of technology north bangkok")
     if request.POST.get('subject_find'):
         select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         what_sub = request.POST['subject_find']
         return render(request, 'tinder/home.html', {'search_result': select_sub, "what_sub": what_sub})
-    print(list)
-    return render(request, 'tinder/home.html', {'name': Userinfo.objects.get(name="pakkapure") })
+    return render(request, 'tinder/home.html', {'name': Userinfo.objects.get(name=request.user.username) })
 def select_delete(request,user_id):
     User1 = Userinfo.objects.get(id=user_id)
     modelget = get_object_or_404(Userinfo, id=user_id)

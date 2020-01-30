@@ -5,7 +5,7 @@
     <title>Match-and-Learn</title>
     <h1>Match and Learn {{ User1 }}</h1>
     <a href="{% url 'tinder:logout' %}">logout</a>
-   <p>search for some one you're looking for</p>
+   <p>search for some one you're looking for</p><p>{{ name.fullname }}</p>
     <form method="POST">
         <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
         <input type="submit" value="search">
@@ -16,7 +16,7 @@
 <h1>{{ what_sub }}</h1>
 <table id = "find_result">
 {% for select in search_result %}
-   <tr><td>{{ forloop.counter }}: {{ select.name }}</td></tr>
+    <tr><td>{{ forloop.counter }}:<a href="/tinderforeduapp/{{ select.id }}/profile">{{ select.name }}</a></td></tr>
 {% endfor %}
 </table>
 {% if user.is_authenticated %}

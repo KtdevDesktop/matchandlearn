@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <h1>Enter your good subject</h1>
+     <h2>id :{{ profile.name }}</h2>
+    <p id="fullname_id">First name: {{ profile.fullname }}</p>
+    <p id="lastname_id">Last name: {{ profile.lastname }}</p>
+    <p id="age_id">age: {{ profile.age }}</p>
+     <p id="school_id">school: {{profile.school }}</p>
+</head>
+<body>
+    {% for subject_name in subject.all %}
+       <p>{{ forloop.counter }}:{{ subject_name }}</p>
+    {% endfor %}
+<a href="{% url 'tinder:home' %}">go back to home</a>
+<form method="post">
+    {% csrf_token %}
+    <button name="match" value="match">Match</button>
+</form>
+</body>
+</html>
