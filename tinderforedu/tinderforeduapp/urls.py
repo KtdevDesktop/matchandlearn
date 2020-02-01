@@ -5,6 +5,7 @@ from .  import views
 from django.conf.urls import url
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
+from django.conf.urls import include
 
 from . import views as core_views
 
@@ -16,5 +17,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(next_page='/tinderforeduapp/login'), name="logout"),
     url(r'^signup/$', core_views.signup, name='signup'),
-    path('<int:user_id>/profile/',views.another_profile,name='profile')
+    path('<int:user_id>/profile/',views.another_profile,name='profile'),
+    path('chat/', include('chat.urls')),
 ]
