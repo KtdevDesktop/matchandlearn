@@ -27,5 +27,8 @@
         <h2>pls login first</h2>
         <meta http-equiv="Refresh" content="3; url=/tinderforeduapp/login/" />
     {% endif %}
+{% for test in test %}
+    <p>this user want to match you :{{ test.request_list }}</p>
+{% endfor %}
 </body>
 </html>

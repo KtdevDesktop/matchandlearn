@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^signup/$', core_views.signup, name='signup'),
     path('<int:user_id>/profile/',views.another_profile,name='profile'),
     path('chat/', include('chat.urls')),
+    path('<int:user_id>/match/',views.match,name="match"),
 ]

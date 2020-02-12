@@ -11,7 +11,10 @@ class Subject(models.Model):
     def __str__(self):
         return self.subject_name
 
-
+class request_class(models.Model):
+    request_list = models.TextField(max_length=200,blank=True)
+class match_class(models.Model):
+    match = models.TextField(max_length=200,blank=True)
 class Userinfo(models.Model):
     name = models.TextField(max_length=200, blank=True)
     fullname = models.TextField(max_length=200, blank=True)
@@ -19,6 +22,8 @@ class Userinfo(models.Model):
     age = models.TextField(max_length=10,blank=True)
     school = models.TextField(max_length=200,blank=True)
     good_subject = models.ManyToManyField(Subject, related_name='Userinfos')
+    request = models.ManyToManyField(request_class)
+    match = models.ManyToManyField(match_class)
     def __str__(self):
         return self.name
 
