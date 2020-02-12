@@ -4,11 +4,28 @@
 <head>
     <meta charset="utf-8"/>
     <title>Chat Room</title>
+    <h2>Login as : {{ user.username }}</h2>
 </head>
 <body>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
     <input id="chat-message-input" type="text" size="100"/><br/>
     <input id="chat-message-submit" type="button" value="Send"/>
+    <style>
+    textarea {
+        width: 100%;
+        height: 500px;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        font-size: 60px;
+        resize: none;
+        }
+        input[type=text] {
+        font-size: 60px;
+        }
+    </style>
 </body>
 <script>
     var roomName = "{{ room_name|escapejs }}";
@@ -36,11 +53,10 @@
 
     document.querySelector('#chat-message-submit').onclick = function(e) {
         var messageInputDom = document.querySelector('#chat-message-input');
-        var message = messageInputDom.value;
+        var message = "{{ user.username }} : " + messageInputDom.value;
         chatSocket.send(JSON.stringify({
             'message': message
         }));
-
         messageInputDom.value = '';
     };
 </script>

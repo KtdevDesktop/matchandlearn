@@ -12,10 +12,10 @@
     {% for subject_name in subject.all %}
        <p>{{ forloop.counter }}:{{ subject_name }}</p>
     {% endfor %}
-<a href="{% url 'tinder:home' %}">go back to home</a>
 <form method="post">
     {% csrf_token %}
     <button name="match" value="match">Match</button>
 </form>
+<a href="{% url 'tinder:home' %}">go back to home</a>
 </body>
 </html>

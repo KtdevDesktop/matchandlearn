@@ -3,7 +3,8 @@
 <head>
     {% if user.is_authenticated %}
     <title>Match-and-Learn</title>
-    <h1>Match and Learn {{ User1 }}</h1>
+    <h1>Match and Learn</h1>
+        <h2>Welcome, {{ user.username }}!</h2>
     <a href="{% url 'tinder:logout' %}">logout</a>
    <p>search for some one you're looking for</p><p>{{ name.fullname }}</p>
     <form method="POST">
