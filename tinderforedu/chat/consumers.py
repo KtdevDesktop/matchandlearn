@@ -10,7 +10,7 @@ class ChatConsumer(WebsocketConsumer):
         if Savechat.objects.filter(name = self.room_name).exists():
             pass
         else:
-            Savechat.objects.create(name=self.room_name)
+            Savechat.objects.create(name=self.room_name, user1=self.room_name.split('_')[0], user2=self.room_name.split('_')[1])
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -43,7 +43,7 @@ class ChatConsumer(WebsocketConsumer):
     def chat_message(self, event):
         message = event['message']
         adddata = Savechat.objects.get(name=self.room_name)
-        adddata.chat += message + str("\\") + str('n')
+        adddata.chat += message + "\n"
         adddata.save()
         # Send message to WebSocket
         self.send(text_data=json.dumps({

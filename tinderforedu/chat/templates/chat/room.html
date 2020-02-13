@@ -7,9 +7,14 @@
     <h2>Login as : {{ user.username }}</h2>
 </head>
 <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
-    <input id="chat-message-input" type="text" size="100"/><br/>
-    <input id="chat-message-submit" type="button" value="Send"/>
+    <textarea id="chat-log" cols="100" rows="20" readonly>{{ log }}</textarea><br/>
+    {% if user.username == usercheck1 or user.username == usercheck2 %}
+        <input id="chat-message-input" type="text" size="100"/><br/>
+        <input id="chat-message-submit" type="button" value="Send"/>
+    {% else %}
+        <input id="chat-message-input" disabled type="text" size="100" value="This chat room is not for you."/><br/>
+        <input id="chat-message-submit" disabled type="button" value="Send"/>
+    {% endif %}
 </body>
 <script>
     var roomName = "{{ room_name|escapejs }}";
@@ -17,8 +22,6 @@
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
-
-    document.querySelector('#chat-log').value = ('{{ test }}');
 
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
