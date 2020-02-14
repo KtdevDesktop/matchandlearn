@@ -1,13 +1,12 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from .forms import SignUpForm
 from .models import Userinfo, Subject,match_class,request_class
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from chat.models import Savechat
 
 # Create your views here.
 
@@ -77,4 +76,5 @@ def match(request,user_id):
         user_name = request_class.objects.create(request_list=Username.name)
         Username.match.add(match)
         match_guy.request.add(user_name)
+        userlist = [request.user.username,Userinfo.objects.get(id=user_id).name].sort()
         return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
