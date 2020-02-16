@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <table id="good_subject_table">
+    <form action="{% url 'tinder:match_request' name.id %}" method="post">
+    {% for list_match in list_match %}
+        <a href="/tinderforeduapp/{{ list_match.id }}/profile_accept">{{ list_match.name }}</a></td>
+    {% endfor %}
+
+         {% csrf_token %}
+    </form>
+    </table>
+    <a href="{% url 'tinder:home' %}">go back to home</a>
+</head>
+<body>
+
+</body>
+</html>

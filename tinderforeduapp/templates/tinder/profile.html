@@ -12,10 +12,17 @@
     {% for subject_name in subject.all %}
        <p>{{ forloop.counter }}:{{ subject_name }}</p>
     {% endfor %}
+    {% if check %}
+    <form method="post" action="{% url 'tinder:unmatched' profile.id %}">
+    {% csrf_token %}
+    <button name="Unmatched" value="Unmatched" >Unmatched</button>
+</form>
+        {% else %}
 <form method="post" action="{% url 'tinder:match' profile.id %}">
     {% csrf_token %}
     <button name="match" value="match" >Match</button>
 </form>
+    {% endif %}
 <a href="{% url 'tinder:home' %}">go back to home</a>
 
 </body>

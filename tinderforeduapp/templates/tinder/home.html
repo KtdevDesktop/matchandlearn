@@ -30,5 +30,7 @@
 {% for test in test %}
     <p>this user want to match you :{{ test.request_list }}</p>
 {% endfor %}
+<a href="{% url 'tinder:match_request' name.id %}">match_request</a></td>
+<a href="{% url 'tinder:tutor_list' name.id%}">tutor_list</a>
 </body>
 </html>

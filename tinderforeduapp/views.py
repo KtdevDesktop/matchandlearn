@@ -1,12 +1,13 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .forms import SignUpForm
 from .models import Userinfo, Subject,match_class,request_class
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from chat.models import Savechat
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -49,12 +50,20 @@ def successlogin(request):
         return render(request, 'tinder/home.html', {'name': request.user.username })
 def another_profile(request,user_id):
     modelget = get_object_or_404(Userinfo,id=user_id)
-    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all()})
+    Username = Userinfo.objects.get(name=request.user.username)
+    match_guy = Userinfo.objects.get(id=user_id)
+    if match_guy.request.filter(request_list=Username.name).exists():
+        return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
+                                                       'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
+                                                       'test': Userinfo.objects.get(
+                                                           name=request.user.username).match.all(),
+                                                       'profile': Userinfo.objects.get(id=user_id),'check':1})
+    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username)})
 def home_page(request):
     if request.POST.get('subject_find'):
         select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         what_sub = request.POST['subject_find']
-        return render(request, 'tinder/home.html', {'search_result': select_sub, "what_sub": what_sub})
+        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": what_sub})
     return render(request,'tinder/home.html',{'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
 def select_delete(request,user_id):
     User1 = Userinfo.objects.get(id=user_id)
@@ -68,13 +77,62 @@ def select_delete(request,user_id):
             select.delete()
 
     return HttpResponseRedirect(reverse('tinder:your_subject', args=(User1.id,)))
+def match_request(request,user_id):
+    match_list_id  = Userinfo.objects.get(name=request.user.username).request.all()
+    list_match = []
+    for i in match_list_id:
+        list_match.append(Userinfo.objects.get(name=i.request_list))
+    return render(request,'tinder/match_request.html',{'name':Userinfo.objects.get(name=request.user.username),'match_request':Userinfo.objects.get(name=request.user.username).request.all(),'list_match':list_match})
 def match(request,user_id):
+    Username = Userinfo.objects.get(name=request.user.username)
+    match_guy = Userinfo.objects.get(id=user_id)
     if request.POST.get('match'):
+        user_name = request_class.objects.create(request_list=Username.name)
+        match_guy.request.add(user_name)
+        return render(request,'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id)})
+def Unmatched(request,user_id):
+    if request.POST.get('Unmatched'):
         Username = Userinfo.objects.get(name=request.user.username)
         match_guy = Userinfo.objects.get(id=user_id)
-        match = match_class.objects.create(match=match_guy.name)
-        user_name = request_class.objects.create(request_list=Username.name)
-        Username.match.add(match)
-        match_guy.request.add(user_name)
-        userlist = [request.user.username,Userinfo.objects.get(id=user_id).name].sort()
-        return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
+        remove_match = match_guy.request.get(request_list=Username.name)
+        match_guy.request.remove(remove_match)
+        return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
+                                                       'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
+                                                       'test': Userinfo.objects.get(
+                                                           name=request.user.username).match.all(),
+                                                       'profile': Userinfo.objects.get(id=user_id)})
+    return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
+                                                   'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
+                                                   'test': Userinfo.objects.get(name=request.user.username).match.all(),
+                                                    'profile': Userinfo.objects.get(id=user_id)})
+def profile_accept(request,user_id):
+
+    if request.POST.get('accept'):
+        Username = Userinfo.objects.get(name=request.user.username)
+        match_guy = Userinfo.objects.get(id=user_id)
+        match_obj = match_class.objects.create(match=match_guy.name)
+        Username.match.add(match_obj)
+        request_obj = Username.request.get(request_list=match_guy.name)
+        Username.request.remove(request_obj)
+        return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
+    if request.POST.get('decline'):
+        Username = Userinfo.objects.get(name=request.user.username)
+        match_guy = Userinfo.objects.get(id=user_id)
+        request_obj = Username.request.get(request_list=match_guy.name)
+        Username.request.remove(request_obj)
+        return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
+    return render(request,'tinder/profile_accept.html',{'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all()})
+def tutor_list(request,user_id):
+    match_list_id = Userinfo.objects.get(name=request.user.username).match.all()
+    list_match = []
+    for i in match_list_id:
+        list_match.append(Userinfo.objects.get(name=i.match))
+    return render(request,'tinder/tutor_list.html',{'tutor_list':Userinfo.objects.get(id=user_id).match.all(),'list_match':list_match})
+def watch_profile(request,user_id):
+    if request.POST.get('unmatch'):
+        Username=Userinfo.objects.get(name=request.user.username)
+        match_guy=Userinfo.objects.get(id=user_id)
+        unmatch_obj= Username.match.get(match=match_guy.name)
+        Username.match.remove(unmatch_obj)
+        return HttpResponseRedirect(reverse('tinder:tutor_list', args=(Username.id,)))
+    return render(request,'tinder/watch_profile.html',{'profile':Userinfo.objects.get(id=user_id)})

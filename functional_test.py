@@ -153,7 +153,7 @@ class signUp(unittest.TestCase):
 
 
     def test_can_add_and_remove_good_subject(self):
-        # stafanie wants to add his good subject so he clicks good subject link
+        # Pure wants to add his good subject so he clicks good subject link
         self.browser.get('http://127.0.0.1:8000/tinderforeduapp/66/your_subject/')
 
         # he notices the header mention Enter your good subject
@@ -163,7 +163,7 @@ class signUp(unittest.TestCase):
 
         # he notices his name
         name_text = self.browser.find_element_by_tag_name('h2').text
-        self.assertIn('name :pakkastafanie', name_text)
+        self.assertIn('name :pakkapure', name_text)
 
         # he notices his age
         age_text = self.browser.find_element_by_id('age_id').text
@@ -238,44 +238,44 @@ class Chat(unittest.TestCase):
         self.browser.quit()
 
     def test_can_send_message(self):
-        # stafanie wants to chat with Tong so he login and clicks their chat room link.
+        # Pure wants to chat with Tong so he login and clicks their chat room link.
         self.browser.get('http://127.0.0.1:8001/tinderforeduapp/login')
         username_box = self.browser.find_element_by_name('username')
         password_box = self.browser.find_element_by_name('password')
-        username_box.send_keys('stafanie')
+        username_box.send_keys('pure')
         password_box.send_keys("qwertyuiop[]" + "\\")
         login_button = self.browser.find_element_by_tag_name('button')
         login_button.click()
         time.sleep(2)
 
-        # Tong wants to chat with stafanie so he login and clicks their chat room link.
+        # Tong wants to chat with Pure so he login and clicks their chat room link.
         self.browser2.get('http://127.0.0.1:8001/tinderforeduapp/login')
         username_box = self.browser2.find_element_by_name('username')
         password_box = self.browser2.find_element_by_name('password')
         username_box.send_keys('tongu19541')
-        password_box.send_keys("act20068")
+        password_box.send_keys("qwertyuiop[]" + "\\")
         login_button = self.browser2.find_element_by_tag_name('button')
         login_button.click()
         time.sleep(2)
 
         # They enter chat room together.
-        self.browser.get('http://127.0.0.1:8001/chat/tongu19541_stafanie_room/')
-        self.browser2.get('http://127.0.0.1:8001/chat/tongu19541_stafanie_room/')
+        self.browser.get('http://127.0.0.1:8001/chat/tongu19541_pure112_room/')
+        self.browser2.get('http://127.0.0.1:8001/chat/tongu19541_pure112_room/')
         time.sleep(5)
 
-        # stafanie and Tong notices the page title and header mention "Chat Room" with correct user
+        # Pure and Tong notices the page title and header mention "Chat Room" with correct user
         self.assertIn('Chat Room', self.browser.title)
         usercheck = self.browser.find_element_by_tag_name('h2').text
-        self.assertIn('Login as : stafanie', usercheck)
+        self.assertIn('Login as : pure', usercheck)
         self.assertIn('Chat Room', self.browser2.title)
         usercheck2 = self.browser2.find_element_by_tag_name('h2').text
         self.assertIn('Login as : tongu19541', usercheck2)
 
-        # stafanie and Tong notices the chat textarea
+        # Pure and Tong notices the chat textarea
         chatbox = self.browser.find_element_by_id('chat-log')
         chatbox2 = self.browser2.find_element_by_id('chat-log')
 
-        # stafanie and Tong notices the chat textbox
+        # Pure and Tong notices the chat textbox
         chat_textbox = self.browser.find_element_by_id('chat-message-input')
         self.assertEqual(
             chat_textbox.get_attribute('type'),
@@ -287,7 +287,7 @@ class Chat(unittest.TestCase):
             'text'
         )
 
-        # stafanie and Tong notices the send button
+        # Pure and Tong notices the send button
         send_button = self.browser.find_element_by_id('chat-message-submit')
         self.assertEqual(
             send_button.get_attribute('type'),
@@ -299,39 +299,39 @@ class Chat(unittest.TestCase):
             'button'
         )
 
-        # stafanie types message "Hi"
+        # Pure types message "Hi"
         chat_textbox.send_keys('Hi')
         time.sleep(2)
 
-        # stafanie clicks the send button.
+        # Pure clicks the send button.
         send_button.click()
         time.sleep(2)
 
-        # stafanie notices his message is send in textarea
+        # Pure notices his message is send in textarea
         self.assertEqual(
             chatbox.get_attribute('value'),
-            'stafanie : Hi\n'
+            'pure : Hi\n'
         )
 
-        # stafanie types message "I am stafanie"
-        chat_textbox.send_keys("I am stafanie")
+        # Pure types message "I'm Pure"
+        chat_textbox.send_keys("I'm Pure")
         time.sleep(2)
 
         send_button.click()
         time.sleep(2)
 
-        # stafanie notices his message is send in textarea
+        # Pure notices his message is send in textarea
         self.assertEqual(
             chatbox.get_attribute('value'),
-            'stafanie : Hi\n'
-            "stafanie : I am stafanie\n"
+            'pure : Hi\n'
+            "pure : I'm Pure\n"
         )
 
-        # Then, Tong notices that stafanie sent message
+        # Then, Tong notices that Pure sent message
         self.assertEqual(
             chatbox2.get_attribute('value'),
-            'stafanie : Hi\n'
-            "stafanie : I am stafanie\n"
+            'pure : Hi\n'
+            "pure : I'm Pure\n"
         )
 
         # Tong types "Hello"
@@ -345,13 +345,13 @@ class Chat(unittest.TestCase):
         # Tong notices the message was sent.
         self.assertEqual(
             chatbox2.get_attribute('value'),
-            'stafanie : Hi\n'
-            "stafanie : I am stafanie\n"
+            'pure : Hi\n'
+            "pure : I'm Pure\n"
             "tongu19541 : Hello\n"
         )
 
-        # Tong types message "I am Tong"
-        chat_textbox2.send_keys("I am Tong")
+        # Tong types message "I'm Tong"
+        chat_textbox2.send_keys("I'm Tong")
         time.sleep(2)
 
         send_button2.click()
@@ -360,39 +360,21 @@ class Chat(unittest.TestCase):
         # Tong notices the message was sent.
         self.assertEqual(
             chatbox2.get_attribute('value'),
-            'stafanie : Hi\n'
-            "stafanie : I am stafanie\n"
+            'pure : Hi\n'
+            "pure : I'm Pure\n"
             "tongu19541 : Hello\n"
-            "tongu19541 : I am Tong\n"
+            "tongu19541 : I'm Tong\n"
         )
         time.sleep(2)
-        # stafanie notices that the message from Tong was arrived.
+        # Pure notices that the message from Tong was arrived.
         self.assertEqual(
             chatbox.get_attribute('value'),
-            'stafanie : Hi\n'
-            "stafanie : I am stafanie\n"
+            'pure : Hi\n'
+            "pure : I'm Pure\n"
             "tongu19541 : Hello\n"
-            "tongu19541 : I am Tong\n"
+            "tongu19541 : I'm Tong\n"
         )
         time.sleep(2)
-
-        # Tong quit chat room.
-        self.browser2.close()
-        time.sleep(1)
-        self.browser3 = webdriver.Chrome()
-
-        # Tong enters chat room again.
-        self.browser3.get('http://127.0.0.1:8001/chat/tongu19541_stafanie_room/')
-        time.sleep(10)
-
-        # message still
-        self.assertEqual(
-            chatbox2.get_attribute('value'),
-            'stafanie : Hi\n'
-            "stafanie : I am stafanie\n"
-            "tongu19541 : Hello\n"
-            "tongu19541 : I am Tong\n"
-        )
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

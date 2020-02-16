@@ -20,4 +20,9 @@ urlpatterns = [
     path('<int:user_id>/profile/',views.another_profile,name='profile'),
     path('chat/', include('chat.urls')),
     path('<int:user_id>/match/',views.match,name="match"),
+    path('<int:user_id>/Unmatched/',views.Unmatched,name="unmatched"),
+    path('<int:user_id>/match_request/',views.match_request,name="match_request"),
+    path('<int:user_id>/profile_accept/',views.profile_accept,name="profile_accept"),
+    path('<int:user_id>/tutor_list/',views.tutor_list,name="tutor_list"),
+    path('<int:user_id>/watch_profile',views.watch_profile,name="watch_profile")
 ]

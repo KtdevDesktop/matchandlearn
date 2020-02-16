@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <h2>id :{{ profile.name }}</h2>
+    <p id="fullname_id">First name: {{ profile.fullname }}</p>
+    <p id="lastname_id">Last name: {{ profile.lastname }}</p>
+    <p id="age_id">age: {{ profile.age }}</p>
+     <p id="school_id">school: {{profile.school }}</p>
+</head>
+<body>
+     <form action="{% url 'tinder:watch_profile' profile.id %}" method="post">
+         {% csrf_token %}
+    <button name="unmatch" value="unmatch" >unmatched</button>
+    </form>
+</body>
+</html>

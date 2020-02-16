@@ -15,6 +15,7 @@ class request_class(models.Model):
     request_list = models.TextField(max_length=200,blank=True)
 class match_class(models.Model):
     match = models.TextField(max_length=200,blank=True)
+
 class Userinfo(models.Model):
     name = models.TextField(max_length=200, blank=True)
     fullname = models.TextField(max_length=200, blank=True)
