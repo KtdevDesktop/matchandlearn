@@ -6,26 +6,60 @@
     <title>Chat Room</title>
     <h2>Login as : {{ user.username }}</h2>
 </head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
-    <input id="chat-message-input" type="text" size="100"/><br/>
-    <input id="chat-message-submit" type="button" value="Send"/>
-    <style>
-    textarea {
-        width: 100%;
-        height: 500px;
-        padding: 12px 20px;
-        box-sizing: border-box;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        background-color: #f8f8f8;
-        font-size: 60px;
-        resize: none;
+<style>
+.leftside, .rightside {
+    height:50vh;
+	width:100%;
+	color:#fff;
+	font-size:40px;
+
+}
+@media screen and (min-width:768px)
+{
+.leftside, .rightside {
+        height:50vh;
+	}
+}
+</style>
+<div class="row no-gutters">
+	<div class="col-md-6 no-gutters">
+		<div class="leftside d-flex justify-content-center align-items-center">
+			<textarea id="chat-log2" cols="100" rows="20" readonly>{{ log }}</textarea><br/>
+		</div>
+	</div>
+	<div class="col-md-6 no-gutters">
+		<div class="rightside d-flex justify-content-center align-items-center">
+            <textarea id="chat-log" cols="100" rows="20" readonly>{{ log }}</textarea><br/>
+		</div>
+	</div>
+</div>
+Input text here :
+<style>
+        textarea {
+            width: 100%;
+            height: 50vh;
+            font-size: 20px;
+            overflow-y: scroll;
+            resize: none;
+            background-color: #ffd0eb;
         }
         input[type=text] {
-        font-size: 60px;
+            width: 100%;
+            font-size: 20px;
+        }
+        input[type=button] {
+            width: 100%;
         }
     </style>
+    {% if user.username == usercheck1 or user.username == usercheck2 %}
+        <input id="chat-message-input" type="text" size="100"/><br/>
+        <input id="chat-message-submit" type="button" value="Send"/>
+    {% else %}
+        <input id="chat-message-input" readonly type="text" size="100" value="This chat room is not for you."/><br/>
+        <input id="chat-message-submit" disabled type="button" value="Send"/>
+    {% endif %}
 </body>
 <script>
     var roomName = "{{ room_name|escapejs }}";
@@ -34,10 +68,25 @@
         'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
+    var textarea = document.getElementById('chat-log');
+    document.querySelector('#chat-log').scrollTop = textarea.scrollHeight;
+    document.querySelector('#chat-log2').scrollTop = textarea.scrollHeight;
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
-        document.querySelector('#chat-log').value += (message + '\n');
+        if (message.includes('{{ user.username }}') == true) {
+            document.querySelector('#chat-log').value += (message + '\n');
+            document.querySelector('#chat-log2').value += ('\n');
+            document.querySelector('#chat-log').scrollTop = textarea.scrollHeight;
+            document.querySelector('#chat-log2').scrollTop = textarea.scrollHeight;
+        }
+        else {
+            document.querySelector('#chat-log2').value += (message + '\n');
+            document.querySelector('#chat-log').value += ('\n');
+            document.querySelector('#chat-log').scrollTop = textarea.scrollHeight;
+            document.querySelector('#chat-log2').scrollTop = textarea.scrollHeight;
+        }
+        document.querySelector('#chat-log').scrollTop = textarea.scrollHeight;
     };
 
     chatSocket.onclose = function(e) {
