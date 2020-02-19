@@ -7,9 +7,7 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
-        if Savechat.objects.filter(name = self.room_name).exists():
-            pass
-        else:
+        if not Savechat.objects.filter(name = self.room_name).exists():
             Savechat.objects.create(name=self.room_name, user1=self.room_name.split('_')[0], user2=self.room_name.split('_')[1])
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -43,7 +41,7 @@ class ChatConsumer(WebsocketConsumer):
     def chat_message(self, event):
         message = event['message']
         adddata = Savechat.objects.get(name=self.room_name)
-        adddata.chat += message + "\n"
+        adddata.chat += message + ","
         adddata.save()
         # Send message to WebSocket
         self.send(text_data=json.dumps({

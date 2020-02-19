@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+{% block extra_js %}
+<head>
+    {% if user.is_authenticated %}
+    <title>Match-and-Learn</title>
+    <h1>Match and Learn</h1>
+        <h2>Welcome, {{ user.username }}!</h2>
+    <a href="{% url 'tinder:logout' %}">logout</a>
+   <p>search for some one you're looking for</p><p>{{ name.fullname }}</p>
+    <form method="POST">
+        <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
+        <input type="submit" value="search">
+        {% csrf_token %}
+    </form>
+</head>
+<body>
+<h1>{{ what_sub }}</h1>
+<table id = "find_result">
+{% for select in search_result %}
+    <tr><td>{{ forloop.counter }}:<a href="/{{ select.id }}/profile">{{ select.name }}</a></td></tr>
+{% endfor %}
+</table>
+{% if user.is_authenticated %}
+<a href="/{{ name.id }}/your_subject">good subject</a>
+{% endif %}
+    {% else %}
+        <h2>pls login first</h2>
+        <meta http-equiv="Refresh" content="3; url=/login/" />
+    {% endif %}
+{% for test in test %}
+    <p>this user want to match you :{{ test.request_list }}</p>
+{% endfor %}
+</body>
+{% endblock extra_js %}
+</html>
