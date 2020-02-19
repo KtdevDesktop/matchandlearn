@@ -1,13 +1,11 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from .forms import SignUpForm
-from .models import Userinfo, Subject,match_class,request_class ,Profile
+from .models import Userinfo, Subject,match_class,request_class
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -15,6 +13,8 @@ from django.contrib.auth.models import User
 def home(request):
     return render(request, 'tinder/home.html')
 
+def test_redirect(request):
+    return HttpResponseRedirect("/")
 
 def signup(request):
     if request.method == "POST":
@@ -33,7 +33,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('/tinderforeduapp/login')
+            return redirect('/login')
     else:
         form = SignUpForm()
     return render(request, 'tinder/signup.html', {'form': form})

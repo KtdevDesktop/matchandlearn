@@ -15,7 +15,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_start_a_search_list_and_retrieve_it_later(self):
         # Edith has heard about a cool finding tutor app. She goes
         # to check out its homepage
-        self.browser.get('http://localhost:8000/tinderforeduapp/')
+        self.browser.get('http://localhost:8000/')
 
         # She notices the page title and header mention Tinder-for-EDU
         self.assertIn('Match-and-Learn', self.browser.title)
@@ -74,7 +74,7 @@ class signUp(unittest.TestCase):
 
     def test_can_sign_up_and_retrieve_it_later(self):
         # Edith wants to be a member so she clicks sign up link
-        self.browser.get('http://localhost:8000/tinderforeduapp/signup')
+        self.browser.get('http://localhost:8000/signup')
 
         # She notices the header mention Sign up
         self.assertIn('', self.browser.title)
@@ -154,7 +154,7 @@ class signUp(unittest.TestCase):
 
     def test_can_add_and_remove_good_subject(self):
         # Pure wants to add his good subject so he clicks good subject link
-        self.browser.get('http://127.0.0.1:8000/tinderforeduapp/66/your_subject/')
+        self.browser.get('http://127.0.0.1:8000/66/your_subject/')
 
         # he notices the header mention Enter your good subject
         self.assertIn('', self.browser.title)
@@ -239,7 +239,7 @@ class Chat(unittest.TestCase):
 
     def test_can_send_message(self):
         # Pure wants to chat with Tong so he login and clicks their chat room link.
-        self.browser.get('http://127.0.0.1:8001/tinderforeduapp/login')
+        self.browser.get('http://127.0.0.1:8001/login')
         username_box = self.browser.find_element_by_name('username')
         password_box = self.browser.find_element_by_name('password')
         username_box.send_keys('pure')
@@ -249,7 +249,7 @@ class Chat(unittest.TestCase):
         time.sleep(2)
 
         # Tong wants to chat with Pure so he login and clicks their chat room link.
-        self.browser2.get('http://127.0.0.1:8001/tinderforeduapp/login')
+        self.browser2.get('http://127.0.0.1:8001/login')
         username_box = self.browser2.find_element_by_name('username')
         password_box = self.browser2.find_element_by_name('password')
         username_box.send_keys('tongu19541')

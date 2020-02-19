@@ -4,7 +4,7 @@
 
      {% for key,value in list_match.items %}
             <form method="post" action="{% url 'chat:room' value %}" target="_blank">
-                <a href="/tinderforeduapp/{{ key.id }}/watch_profile">{{ key }}</a>
+                <a href="/{{ key.id }}/watch_profile">{{ key }}</a>
 
     {% csrf_token %}
                 <button name="room" value="room" >chat room</button>
