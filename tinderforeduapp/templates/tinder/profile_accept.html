@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <!DOCTYPE html>
-<html lang="en">
+
 <head>
     <h1>Enter your good subject</h1>
      <h2>id :{{ profile.name }}</h2>
@@ -17,12 +16,14 @@
     <form action="{% url 'tinder:profile_accept' profile.id %}" method="post">
          {% csrf_token %}
     <button name="accept" value="accept" >accept</button>
-    </form>
-    <form action="{% url 'tinder:profile_accept' profile.id %}" method="post">
-         {% csrf_token %}
     <button name="decline" value="decline" >decline</button>
     </form>
-    <a href="{% url 'tinder:match_request' name.id %}"
+
+    <form method="post" action="{% url 'chat:room' chat_room_name %}" target="_blank">
+    {% csrf_token %}
+    <button name="room" value="room" >chat room</button>
+    </form>
+    <a href="{% url 'tinder:match_request'  name.id  %}">go back to match request</a>
     <a href="{% url 'tinder:home' %}">go back to home</a>
 </head>
 </html>

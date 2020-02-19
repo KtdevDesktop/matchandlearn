@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .forms import SignUpForm
-from .models import Userinfo, Subject,match_class,request_class
+from .models import Userinfo, Subject,match_class,request_class ,Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
@@ -52,13 +52,16 @@ def another_profile(request,user_id):
     modelget = get_object_or_404(Userinfo,id=user_id)
     Username = Userinfo.objects.get(name=request.user.username)
     match_guy = Userinfo.objects.get(id=user_id)
+    Url_list = [Username.name,match_guy.name]
+    Url_list_sort=sorted(Url_list)
+    Url_chat =Url_list_sort[0]+"_"+Url_list_sort[1]
     if match_guy.request.filter(request_list=Username.name).exists():
         return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
                                                        'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                        'test': Userinfo.objects.get(
                                                            name=request.user.username).match.all(),
-                                                       'profile': Userinfo.objects.get(id=user_id),'check':1})
-    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username)})
+                                                       'profile': Userinfo.objects.get(id=user_id),'check':1,"chat_room_name":Url_chat})
+    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
 def home_page(request):
     if request.POST.get('subject_find'):
         select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
@@ -86,11 +89,19 @@ def match_request(request,user_id):
 def match(request,user_id):
     Username = Userinfo.objects.get(name=request.user.username)
     match_guy = Userinfo.objects.get(id=user_id)
+    Url_list = [Username.name, match_guy.name]
+    Url_list_sort = sorted(Url_list)
+    Url_chat = Url_list_sort[0] + "_"+Url_list_sort[1]
     if request.POST.get('match'):
         user_name = request_class.objects.create(request_list=Username.name)
         match_guy.request.add(user_name)
-        return render(request,'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id)})
+        return render(request,'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
 def Unmatched(request,user_id):
+    Username = Userinfo.objects.get(name=request.user.username)
+    match_guy = Userinfo.objects.get(id=user_id)
+    Url_list = [Username.name, match_guy.name]
+    Url_list_sort = sorted(Url_list)
+    Url_chat = Url_list_sort[0] + "_"+Url_list_sort[1]
     if request.POST.get('Unmatched'):
         Username = Userinfo.objects.get(name=request.user.username)
         match_guy = Userinfo.objects.get(id=user_id)
@@ -100,13 +111,17 @@ def Unmatched(request,user_id):
                                                        'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                        'test': Userinfo.objects.get(
                                                            name=request.user.username).match.all(),
-                                                       'profile': Userinfo.objects.get(id=user_id)})
+                                                       'profile': Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
     return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
                                                    'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                    'test': Userinfo.objects.get(name=request.user.username).match.all(),
-                                                    'profile': Userinfo.objects.get(id=user_id)})
+                                                    'profile': Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
 def profile_accept(request,user_id):
-
+    Username = Userinfo.objects.get(name=request.user.username)
+    match_guy = Userinfo.objects.get(id=user_id)
+    Url_list = [Username.name, match_guy.name]
+    Url_list_sort = sorted(Url_list)
+    chat_room_name = Url_list_sort[0] + "_"+Url_list_sort[1]
     if request.POST.get('accept'):
         Username = Userinfo.objects.get(name=request.user.username)
         match_guy = Userinfo.objects.get(id=user_id)
@@ -121,13 +136,17 @@ def profile_accept(request,user_id):
         request_obj = Username.request.get(request_list=match_guy.name)
         Username.request.remove(request_obj)
         return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
-    return render(request,'tinder/profile_accept.html',{'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all()})
-def tutor_list(request,user_id):
+    return render(request,'tinder/profile_accept.html',{'chat_room_name':chat_room_name,'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all()})
+def students_list(request,user_id):
     match_list_id = Userinfo.objects.get(name=request.user.username).match.all()
-    list_match = []
+    list_match = {}
     for i in match_list_id:
-        list_match.append(Userinfo.objects.get(name=i.match))
-    return render(request,'tinder/tutor_list.html',{'tutor_list':Userinfo.objects.get(id=user_id).match.all(),'list_match':list_match})
+        list_sort = []
+        key = Userinfo.objects.get(name=i.match)
+        list_sort = sorted([Userinfo.objects.get(name=request.user.username).name,Userinfo.objects.get(name=i.match).name])
+        value = list_sort[0]+"_"+list_sort[1]
+        list_match[key]=value
+    return render(request,'tinder/students_list.html',{"name":Userinfo.objects.get(name=request.user.username),'tutor_list':Userinfo.objects.get(id=user_id).match.all(),'list_match':list_match})
 def watch_profile(request,user_id):
     if request.POST.get('unmatch'):
         Username=Userinfo.objects.get(name=request.user.username)
