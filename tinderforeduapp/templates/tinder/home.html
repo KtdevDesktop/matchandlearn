@@ -1,17 +1,62 @@
+{% load static %}
 <!DOCTYPE html>
+
 <html lang="en">
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 15px;
+  text-decoration: none;
+
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+bg{
+    background-position:mid;
+}
+</style>
 <head>
     {% if user.is_authenticated %}
     <title>Match-and-Learn</title>
-    <h1>Match and Learn</h1>
-        <h2>Welcome, {{ user.username }}!</h2>
-    <a href="{% url 'tinder:logout' %}">logout</a>
-   <p>search for some one you're looking for</p><p>{{ name.fullname }}</p>
+
+<ul>
+  <li><a href="/">Home</a></li>
+  <li><a href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
+  <li><a href="{% url 'tinder:match_request' name.id %}">Match request</a></li>
+    <li>Welcome, {{ name.fullname }}!</li>
+    <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
+    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile</a></li>
+</ul>
+    <img src="{% static 'photo_home/image/logo.png' %}" width="1544" height="500">
+   <p>search for some one you're looking for</p>
     <form method="POST">
         <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
         <input type="submit" value="search">
         {% csrf_token %}
     </form>
+    {% else %}
+        <meta http-equiv="Refresh" content="0.5; url=/login/" />
+    {% endif %}
 </head>
 <body>
 <h1>{{ what_sub }}</h1>
@@ -20,17 +65,11 @@
     <tr><td>{{ forloop.counter }}:<a href="/{{ select.id }}/profile">{{ select.name }}</a></td></tr>
 {% endfor %}
 </table>
-{% if user.is_authenticated %}
-<a href="/{{ name.id }}/your_subject">good subject</a>
-{% endif %}
-    {% else %}
-        <h2>pls login first</h2>
-        <meta http-equiv="Refresh" content="3; url=/login/" />
-    {% endif %}
+
 {% for test in test %}
     <p>this user want to match you :{{ test.request_list }}</p>
 {% endfor %}
-<a href="{% url 'tinder:match_request' name.id %}">match_request</a></td>
-<a href="{% url 'tinder:students_list' name.id%}">students_list</a>
+
+
 </body>
 </html>

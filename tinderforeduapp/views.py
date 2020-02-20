@@ -63,6 +63,8 @@ def another_profile(request,user_id):
                                                        'profile': Userinfo.objects.get(id=user_id),'check':1,"chat_room_name":Url_chat})
     return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
 def home_page(request):
+    if (Userinfo.objects.filter(name=request.user.username).count() == 0):
+        return render(request,'tinder/home.html')
     if request.POST.get('subject_find'):
         select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         what_sub = request.POST['subject_find']
