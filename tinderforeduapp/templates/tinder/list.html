@@ -1,0 +1,18 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>All customers</h1>
+        {% for customer in customers %}
+            {{ customer.name }}
+            <br>
+
+            {% for favorite in customer.favorites.all %}
+                i like {{ favorite.name }}.
+                <br>
+            {% endfor %}
+
+            <hr>
+        {% endfor %}
+    </body>
+</html>

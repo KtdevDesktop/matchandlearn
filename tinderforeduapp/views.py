@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from .forms import SignUpForm
-from .models import Userinfo, Subject,match_class,request_class
+from .forms import SignUpForm , CommentForm
+from .models import Userinfo, Subject,match_class,request_class, Comment
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
@@ -55,6 +55,24 @@ def another_profile(request,user_id):
     Url_list = [Username.name,match_guy.name]
     Url_list_sort=sorted(Url_list)
     Url_chat =Url_list_sort[0]+"_"+Url_list_sort[1]
+    if request.POST.get('comment_input'):
+        comment_text = comment.objects.create(comment=request.POST['comment_input'])
+        if not comment.objects.filter(whocomment = Username, commentto= match_guy):
+            a1 = comment.objects.create(comment_value = comment_text, whocomment = Username, commentto= match_guy)
+            a1.save()
+        else:
+            a1 = comment.objects.get(whocomment = Username, commentto= match_guy)
+            a1.comment_value = comment_text
+            a1.save()
+    if request.POST.get('star_input'):
+        star_score = comment.objects.create(comment=request.POST['star_input'])
+        if not comment.objects.filter(whocomment = Username, commentto= match_guy):
+            a1 = comment.objects.create(comment_value = star_score, whocomment = Username, commentto= match_guy)
+            a1.save()
+        else:
+            a1 = comment.objects.get(whocomment = Username, commentto= match_guy)
+            a1.comment_value = star_score
+            a1.save()
     if match_guy.request.filter(request_list=Username.name).exists():
         return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
                                                        'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
@@ -131,6 +149,8 @@ def profile_accept(request,user_id):
         Username.match.add(match_obj)
         request_obj = Username.request.get(request_list=match_guy.name)
         Username.request.remove(request_obj)
+        match_obj2 = match_class.objects.create(match=Username.name)
+        match_guy.match.add(match_obj2)
         return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
     if request.POST.get('decline'):
         Username = Userinfo.objects.get(name=request.user.username)
@@ -150,10 +170,31 @@ def students_list(request,user_id):
         list_match[key]=value
     return render(request,'tinder/students_list.html',{"name":Userinfo.objects.get(name=request.user.username),'tutor_list':Userinfo.objects.get(id=user_id).match.all(),'list_match':list_match})
 def watch_profile(request,user_id):
+    match_guy = Userinfo.objects.get(id=user_id)
+    post = get_object_or_404(Userinfo, name=match_guy.name)
+    comments = post.comments.filter(active=True)
+    new_comment = None
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+
+            # Create Comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+            # Assign the current post to the comment
+            new_comment.post = post
+            new_comment.name = request.user.username
+            # Save the comment to the database
+            new_comment.save()
+
+    else:
+        comment_form = CommentForm()
     if request.POST.get('unmatch'):
-        Username=Userinfo.objects.get(name=request.user.username)
-        match_guy=Userinfo.objects.get(id=user_id)
+        Username = Userinfo.objects.get(name=request.user.username)
+        match_guy = Userinfo.objects.get(id=user_id)
         unmatch_obj= Username.match.get(match=match_guy.name)
         Username.match.remove(unmatch_obj)
-        return HttpResponseRedirect(reverse('tinder:tutor_list', args=(Username.id,)))
-    return render(request,'tinder/watch_profile.html',{'profile':Userinfo.objects.get(id=user_id)})
+        unmatch_obj2= match_guy.match.get(match=Username.name)
+        match_guy.match.remove(unmatch_obj2)
+        return HttpResponseRedirect(reverse('tinder:students_list', args=(Username.id,)))
+    return render(request,'tinder/watch_profile.html',{'profile':Userinfo.objects.get(id=user_id),'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
+

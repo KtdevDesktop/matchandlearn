@@ -41,7 +41,7 @@ bg{
 
 <ul>
   <li><a href="/">Home</a></li>
-  <li><a href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
+  <li><a href="{% url 'tinder:students_list' name.id %}">Students and Tutor list</a></li>
   <li><a href="{% url 'tinder:match_request' name.id %}">Match request</a></li>
     <li>Welcome, {{ name.fullname }}!</li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
