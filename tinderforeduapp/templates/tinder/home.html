@@ -31,6 +31,29 @@ li a:hover:not(.active) {
 .active {
   background-color: #4CAF50;
 }
+.notification {
+      background-color: #555;
+      color: white;
+      text-decoration: none;
+      padding: 15px 26px;
+      position: relative;
+      display: inline-block;
+      border-radius: 2px;
+    }
+
+    .notification:hover {
+      background: red;
+    }
+
+    .notification .badge {
+      position: absolute;
+      top: 12px;
+      right: 1px;
+      padding: 3px 5px;
+      border-radius: 40%;
+      background: red;
+      color: white;
+    }
 bg{
     background-position:mid;
 }
@@ -41,9 +64,9 @@ bg{
 
 <ul>
   <li><a href="/">Home</a></li>
-  <li><a href="{% url 'tinder:students_list' name.id %}">Students and Tutor list</a></li>
-  <li><a href="{% url 'tinder:match_request' name.id %}">Match request</a></li>
-    <li>Welcome, {{ name.fullname }}!</li>
+  <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
+    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" class="notification"><span>Match request</span><span name= "value_notificate" class="badge">{{ name.match_request }}</span></a></li>
+    <li><a name = "Chat" href="">Chat</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
     <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile</a></li>
 </ul>
@@ -51,7 +74,7 @@ bg{
    <p>search for some one you're looking for</p>
     <form method="POST">
         <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
-        <input type="submit" value="search">
+        <input name="subject_find-submit" type="submit" value="search">
         {% csrf_token %}
     </form>
     {% else %}

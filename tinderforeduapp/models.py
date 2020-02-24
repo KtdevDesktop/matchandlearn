@@ -29,8 +29,21 @@ class Userinfo(models.Model):
     good_subject = models.ManyToManyField(Subject, related_name='Userinfos')
     request = models.ManyToManyField(request_class)
     match = models.ManyToManyField(match_class)
+    match_request = models.IntegerField(default=0)
+    massage_list = models.IntegerField(default=0)
+
     def __str__(self):
         return self.name
+    def read(self):
+        self.match_request = 0
+        self.save()
+    def notify(self):
+        self.match_request = self.match_request + 1
+        self.save()
+
+    def denotify(self):
+        self.match_request = self.match_request - 1
+        self.save()
 
 class Comment(models.Model):
     post = models.ForeignKey(Userinfo,on_delete=models.CASCADE,related_name='comments',null=True)

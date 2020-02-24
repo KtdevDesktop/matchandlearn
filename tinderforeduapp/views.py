@@ -82,7 +82,7 @@ def another_profile(request,user_id):
     return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
 def home_page(request):
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
-        return render(request,'tinder/home.html')
+        return render(request,'tinder/home.html',{'login':0})
     if request.POST.get('subject_find'):
         select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         what_sub = request.POST['subject_find']
@@ -103,6 +103,9 @@ def select_delete(request,user_id):
 def match_request(request,user_id):
     match_list_id  = Userinfo.objects.get(name=request.user.username).request.all()
     list_match = []
+    usernaem=Userinfo.objects.get(name=request.user.username)
+    usernaem.read()
+    usernaem.save()
     for i in match_list_id:
         list_match.append(Userinfo.objects.get(name=i.request_list))
     return render(request,'tinder/match_request.html',{'name':Userinfo.objects.get(name=request.user.username),'match_request':Userinfo.objects.get(name=request.user.username).request.all(),'list_match':list_match})
@@ -115,6 +118,8 @@ def match(request,user_id):
     if request.POST.get('match'):
         user_name = request_class.objects.create(request_list=Username.name)
         match_guy.request.add(user_name)
+        Userinfo.objects.get(id=user_id).notify()
+        Userinfo.objects.get(id=user_id).save()
         return render(request,'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
 def Unmatched(request,user_id):
     Username = Userinfo.objects.get(name=request.user.username)
@@ -127,6 +132,8 @@ def Unmatched(request,user_id):
         match_guy = Userinfo.objects.get(id=user_id)
         remove_match = match_guy.request.get(request_list=Username.name)
         match_guy.request.remove(remove_match)
+        Userinfo.objects.get(id=user_id).denotify()
+        UUserinfo.objects.get(id=user_id).save()
         return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
                                                        'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                        'test': Userinfo.objects.get(
