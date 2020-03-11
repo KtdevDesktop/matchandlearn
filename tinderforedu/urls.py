@@ -5,7 +5,5 @@ urlpatterns = [
     path('', include('tinderforeduapp.urls')),
     path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
-
-
-]
+    path('', include('django.contrib.auth.urls')),]
 

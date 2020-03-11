@@ -13,7 +13,7 @@ def room(request, room_name):
     if Savechat.objects.filter(name=room_name,user1=usercheck1,user2=usercheck2).exists():
         if (Savechat.objects.get(name=room_name).user1 == username) or (Savechat.objects.get(name=room_name).user2 == username):
             log = Savechat.objects.get(name=room_name).chat
-            splitlog = log.split(",")
+            splitlog = log.split("`~`~`~`~`~`")
             usercheck1 = Savechat.objects.get(name=room_name).user1
             usercheck2 = Savechat.objects.get(name=room_name).user2
     return render(request, 'chat/room.html', {'room_name': room_name,

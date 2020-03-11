@@ -3,8 +3,8 @@ from django.urls import path
 from . import views
 
 from django.conf.urls import url
-from django.contrib.auth.views import LoginView
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LoginView, LogoutView,PasswordResetView, PasswordResetDoneView, \
+    PasswordResetConfirmView, PasswordResetCompleteView
 from django.conf.urls import include
 
 from . import views as core_views
@@ -25,4 +25,11 @@ urlpatterns = [
     path('<int:user_id>/profile_accept/',views.profile_accept,name="profile_accept"),
     path('<int:user_id>/students_list/',views.students_list,name="students_list"),
     path('<int:user_id>/watch_profile',views.watch_profile,name="watch_profile"),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, name='activate'),
+    url(r'^password_reset/$', PasswordResetView.as_view(), name='password_reset'),
+    url(r'^password_reset/done/$', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    url(r'^reset/done/$', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

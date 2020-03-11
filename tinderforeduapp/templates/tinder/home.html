@@ -65,10 +65,10 @@ bg{
 <ul>
   <li><a href="/">Home</a></li>
   <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
-    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" class="notification"><span>Match request</span><span name= "value_notificate" class="badge">{{ name.match_request }}</span></a></li>
+    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" class="notification"><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
     <li><a name = "Chat" href="">Chat</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
-    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile</a></li>
+    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.username }}</a></li>
 </ul>
     <img src="{% static 'photo_home/image/logo.png' %}" width="1544" height="500">
    <p>search for some one you're looking for</p>

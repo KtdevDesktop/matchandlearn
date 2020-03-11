@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Log in to Match and Learn</title>
+    <title>Match and Learn</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}">
 
     <style>
@@ -79,12 +79,17 @@
     <input type="hidden" name="login" value="{{ next }}" />
     {% for field in form %}
       <input class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.html_name }}" maxlength="30" name="{{ field.html_name }}" type="{{ field.html_name }}"/>
+    {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
     {% endfor %}
   {% if form.errors %}
     <p style="color: red">Username and Password didn't match.<br>Please try again.</p>
   {% endif %}
       <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-    <a href="{% url 'tinder:signup' %}">New to Match and Learn? Sign up now!</a>
+  <p></p>
+    <a href="{% url 'tinder:signup' %}">New to Match and Learn? Sign up now!</a></br>
+  <a href="{% url 'tinder:password_reset' %}">Forgot password?</a>
   </form>
   <footer class="myfooter page-footer font-small fixed-bottom mt-5">
         <div class="footer-copyright text-center py-3">© Ktdev Desktop - All right reserved</div>

@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'tinderforeduapp',
     'channels',
     'chat',
     'django.contrib.admin',
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tinderforeduapp.apps.TinderforeduappConfig',
+    #'tinderforeduapp.apps.TinderforeduappConfig',
 
 ]
 
@@ -139,3 +140,11 @@ STATICFILES_DIRS = [
 ]
 LOGIN_REDIRECT_URL = '/'
 ASGI_APPLICATION = 'tinderforedu.routing.application'
+
+DEFAULT_FROM_EMAIL = 'Match and learn <admin@matchandlearn.social>'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.zoho.com'
+EMAIL_HOST_USER = 'admin@matchandlearn.social'
+***REMOVED***
+EMAIL_PORT = 587

@@ -3,10 +3,11 @@
 <html lang="en">
 
 <head>
+    <META HTTP-EQUIV="Refresh" CONTENT="5;URL=/login">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Match and Learn</title>
+    <title>Log in to Match and Learn</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}">
 
     <style>
@@ -60,6 +61,9 @@
             width: 50%;
         }
 
+        .myrow {
+            background-color: #f6f4e6;
+        }
 
         .myfooter {
             background-color: #f6eedf;
@@ -67,27 +71,12 @@
     </style>
 
 </head>
-
-
 {% block content %}
     <body class="text-center">
   <form class="form-signin" method="post">
   <img src="/static/img/logo.png" alt="" class="rounded mb-4">
     <h2 class="h3 mb-3 font-weight-normal">Match and Learn</h2>
-    {% csrf_token %}
-    <input type="hidden" name="login" value="{{ next }}" />
-    {% for field in form %}
-      <input class="form-control" id="{{ field.id_for_label }}" placeholder="{% if forloop.counter0 == 0 %}Username{% elif forloop.counter0 == 1 %}Password{% elif forloop.counter0 == 2 %}Confirm Password{% elif forloop.counter0 == 3 %}First Name{% elif forloop.counter0 == 4 %}Last Name{% elif forloop.counter0 == 5 %}Age{% elif forloop.counter0 == 6 %}Email{% elif forloop.counter0 == 7 %}College{% endif %}" maxlength="30" name="{{ field.html_name }}" type="{% if forloop.counter0 == 1 %}password{% elif forloop.counter0 == 2 %}password{% elif forloop.counter0 == 6 %}email{% else %}text{% endif %}"/><p></p>
-    {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-    {% endfor %}
-  {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-  <p></p>
-    <a href="{% url 'tinder:login' %}">Back to login</a>
+    <p style="color: red">Please confirm your email address<br>to complete the registration.</p>
   </form>
   <footer class="myfooter page-footer font-small fixed-bottom mt-5">
         <div class="footer-copyright text-center py-3">© Ktdev Desktop - All right reserved</div>

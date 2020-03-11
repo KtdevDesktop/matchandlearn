@@ -41,7 +41,7 @@ class ChatConsumer(WebsocketConsumer):
     def chat_message(self, event):
         message = event['message']
         adddata = Savechat.objects.get(name=self.room_name)
-        adddata.chat += message + ","
+        adddata.chat += message + "`~`~`~`~`~`"
         adddata.save()
         # Send message to WebSocket
         self.send(text_data=json.dumps({

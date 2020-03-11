@@ -2,10 +2,17 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from .forms import SignUpForm , CommentForm
-from .models import Userinfo, Subject,match_class,request_class, Comment
+from .models import Userinfo, Subject,match_class,request_class, Comment, User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.shortcuts import render
+from .tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -20,7 +27,9 @@ def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
             user.refresh_from_db()
             user.profile.first_name = form.cleaned_data.get('first_name')
             user.profile.last_name = form.cleaned_data.get('last_name')
@@ -29,14 +38,37 @@ def signup(request):
             user.profile.age = form.cleaned_data.get('age')
             Userinfo.objects.create(name=user.username, school=user.profile.college, age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name)
             user.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('/login')
+            current_site = get_current_site(request)
+            mail_subject = 'Please verify your email address.'
+            message = render_to_string('tinder/acc_active_email.html', {
+                                        'user': user,
+                                        'domain': current_site.domain,
+                                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                                        'token': account_activation_token.make_token(user), })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            return render(request,'tinder/email_sent.html')
     else:
         form = SignUpForm()
     return render(request, 'tinder/signup.html', {'form': form})
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        # return redirect('home')
+        return render(request,'tinder/Activation_success.html')
+    else:
+        return HttpResponse('''Activation link is invalid! <META HTTP-EQUIV="Refresh" CONTENT="5;URL=/login">''')
+
 def your_subject_page(request,user_id):
     if request.POST.get('subject_good'):
         subject = Subject.objects.create(subject_name=request.POST['subject_good'])
@@ -56,21 +88,21 @@ def another_profile(request,user_id):
     Url_list_sort=sorted(Url_list)
     Url_chat =Url_list_sort[0]+"_"+Url_list_sort[1]
     if request.POST.get('comment_input'):
-        comment_text = comment.objects.create(comment=request.POST['comment_input'])
-        if not comment.objects.filter(whocomment = Username, commentto= match_guy):
-            a1 = comment.objects.create(comment_value = comment_text, whocomment = Username, commentto= match_guy)
+        comment_text = Comment.objects.create(comment=request.POST['comment_input'])
+        if not Comment.objects.filter(whocomment = Username, commentto= match_guy):
+            a1 = Comment.objects.create(comment_value = comment_text, whocomment = Username, commentto= match_guy)
             a1.save()
         else:
-            a1 = comment.objects.get(whocomment = Username, commentto= match_guy)
+            a1 = Comment.objects.get(whocomment = Username, commentto= match_guy)
             a1.comment_value = comment_text
             a1.save()
     if request.POST.get('star_input'):
-        star_score = comment.objects.create(comment=request.POST['star_input'])
-        if not comment.objects.filter(whocomment = Username, commentto= match_guy):
-            a1 = comment.objects.create(comment_value = star_score, whocomment = Username, commentto= match_guy)
+        star_score = Comment.objects.create(comment=request.POST['star_input'])
+        if not Comment.objects.filter(whocomment = Username, commentto= match_guy):
+            a1 = Comment.objects.create(comment_value = star_score, whocomment = Username, commentto= match_guy)
             a1.save()
         else:
-            a1 = comment.objects.get(whocomment = Username, commentto= match_guy)
+            a1 = Comment.objects.get(whocomment = Username, commentto= match_guy)
             a1.comment_value = star_score
             a1.save()
     if match_guy.request.filter(request_list=Username.name).exists():
@@ -133,7 +165,7 @@ def Unmatched(request,user_id):
         remove_match = match_guy.request.get(request_list=Username.name)
         match_guy.request.remove(remove_match)
         Userinfo.objects.get(id=user_id).denotify()
-        UUserinfo.objects.get(id=user_id).save()
+        Userinfo.objects.get(id=user_id).save()
         return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
                                                        'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                        'test': Userinfo.objects.get(
