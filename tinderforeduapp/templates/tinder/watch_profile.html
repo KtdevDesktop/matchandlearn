@@ -6,6 +6,7 @@
     <p id="lastname_id">Last name: {{ profile.lastname }}</p>
     <p id="age_id">age: {{ profile.age }}</p>
      <p id="school_id">school: {{profile.school }}</p>
+    <p id ="bio">gender : {{ profile.bio }}</p>
 </head>
 <body>
      <form action="{% url 'tinder:watch_profile' profile.id %}" method="post">

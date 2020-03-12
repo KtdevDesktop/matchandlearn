@@ -26,9 +26,10 @@ class Userinfo(models.Model):
     lastname = models.TextField(max_length=200, blank=True)
     age = models.TextField(max_length=10,blank=True)
     school = models.TextField(max_length=200,blank=True)
-    good_subject = models.ManyToManyField(Subject, related_name='Userinfos')
-    request = models.ManyToManyField(request_class)
-    match = models.ManyToManyField(match_class)
+    bio = models.TextField(blank=True)
+    good_subject = models.ManyToManyField(Subject, related_name='Userinfos',blank=True)
+    request = models.ManyToManyField(request_class,blank=True)
+    match = models.ManyToManyField(match_class,blank=True)
     match_request = models.IntegerField(default=0)
     massage_list = models.IntegerField(default=0)
 

@@ -7,14 +7,14 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
     college = forms.CharField(max_length=100)
+    bio = forms.CharField(max_length=20)
     email = forms.EmailField(max_length=150)
     age = forms.CharField(max_length=10)
-
 
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'age',
-'email', 'college', )
+'email', 'college','bio', )
 
 
 

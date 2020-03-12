@@ -72,10 +72,29 @@ bg{
 </ul>
     <img src="{% static 'photo_home/image/logo.png' %}" width="1544" height="500">
    <p>search for some one you're looking for</p>
+
     <form method="POST">
+        <label>
+        Select gender :
+    <select name="filter" >
+        <option value="" selected="">Select gender</option>
+        <option value="male">male</option>
+        <option value="female">female</option>
+        <option value="orther">orther</option>
+    </select>
+         </label>
+    <label>
+        School :
+        <input name="location_school" id="location_school_id">
+    </label>
+    </br>
+        <label>
+            Enter a Subject :
         <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
         <input name="subject_find-submit" type="submit" value="search">
         {% csrf_token %}
+            </label>
+
     </form>
     {% else %}
         <meta http-equiv="Refresh" content="0.5; url=/login/" />

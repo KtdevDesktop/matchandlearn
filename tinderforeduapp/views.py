@@ -36,7 +36,8 @@ def signup(request):
             user.profile.email = form.cleaned_data.get('email')
             user.profile.college = form.cleaned_data.get('college')
             user.profile.age = form.cleaned_data.get('age')
-            Userinfo.objects.create(name=user.username, school=user.profile.college, age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name)
+            user.profile.bio = form.cleaned_data.get('bio')
+            Userinfo.objects.create(name=user.username, school=user.profile.college, age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name,bio =user.profile.bio)
             user.save()
             current_site = get_current_site(request)
             mail_subject = 'Please verify your email address.'
@@ -114,10 +115,18 @@ def another_profile(request,user_id):
     return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
 def home_page(request):
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
-        return render(request,'tinder/home.html',{'login':0})
+        return HttpResponseRedirect('/login')
     if request.POST.get('subject_find'):
-        select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         what_sub = request.POST['subject_find']
+        if request.POST['filter'] != "" and request.POST['location_school'] !=" ":
+            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'],school=request.POST['location_school'],bio=request.POST['filter'])
+        elif request.POST['filter'] != "":
+            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'],bio=request.POST['filter'])
+        elif request.POST['location_school'] != "":
+            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'],
+                                                     school=request.POST['location_school'])
+        else:
+            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": what_sub})
     return render(request,'tinder/home.html',{'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
 def select_delete(request,user_id):
