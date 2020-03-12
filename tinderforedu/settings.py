@@ -32,7 +32,7 @@ if os.path.isfile(dotenv_file):
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['matchandlearn.herokuapp.com','matchandlearn.social']
+ALLOWED_HOSTS = ['matchandlearn.herokuapp.com','matchandlearn.social', '127.0.0.1']
 
 # Application definition
 
@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'tinderforeduapp.apps.TinderforeduappConfig',
 
 ]
 
@@ -123,6 +122,18 @@ CHANNEL_LAYERS = {
     },
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -149,9 +160,6 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/'
-
-ASGI_APPLICATION = 'tinderforedu.routing.application'
-
 
 DEFAULT_FROM_EMAIL = 'Match and learn <admin@matchandlearn.social>'
 EMAIL_USE_TLS = True
