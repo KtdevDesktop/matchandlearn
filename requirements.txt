@@ -7,6 +7,7 @@ channels-redis==2.4.1
 daphne==2.4.1
 Django==3.0.3
 django-heroku
+python-dotenv
 django-allauth==0.41.0
 django-braces==1.14.0
 django-cors-headers==3.2.1
