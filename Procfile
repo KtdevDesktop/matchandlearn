@@ -1,0 +1,1 @@
+web: gunicorn tinderforedu.wsgi --log-file -
