@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['matchandlearn.herokuapp.com','matchandlearn.social']
+ALLOWED_HOSTS = ['matchandlearn.herokuapp.com','matchandlearn.social','127.0.0.1']
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     #'tinderforeduapp.apps.TinderforeduappConfig',
 
 ]
@@ -163,3 +164,5 @@ EMAIL_PORT = 587
 
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
+
+SITE_ID = 1
