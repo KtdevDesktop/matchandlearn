@@ -1,5 +1,5 @@
 <!-- chat/templates/chat/room.html -->
-<!DOCTYPE html>
+<!DOCTYPE html> {% load static %}
 <html>
 <head>
     <style type="text/css">
@@ -9,7 +9,7 @@
     <title>Chat Room</title>
     <h2>Login as : {{ user.username }}</h2>
 </head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
 <style>
 .leftside, .rightside {
@@ -70,12 +70,11 @@ Input text here :
         <input id="chat-message-none2" disabled type="button" value="Send"/>
     {% endif %}
 </body>
+<script type="text/javascript" src="{% static 'js/reconnecting-websocket.min.js'%}"></script>
 <script>
     var roomName = "{{ room_name|escapejs }}";
-
-    var chatSocket = new WebSocket(
-        'ws://' + window.location.host +
-        '/ws/chat/' + roomName + '/');
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var chatSocket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + '/ws/chat/' + roomName + '/');
 
     var textarea = document.getElementById('chat-log');
 
