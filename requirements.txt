@@ -18,6 +18,8 @@ dj-database-url==0.5.0
 djangorestframework==3.11.0
 docker==4.1.0
 hiredis==1.0.1
+django-redis-cache==2.1.0
+redis==3.4.1
 hyperlink==19.0.0
 oauthlib==3.1.0
 opencv-contrib-python==4.1.0.25
