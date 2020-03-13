@@ -8,7 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Match and Learn</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-social.css'%}">
+    <link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
+    <link href="{% static 'css/docs.css'%}" rel="stylesheet" >
     <style>
         html,
         body {
@@ -43,6 +45,7 @@
         .form-signin .form-control:focus {
             z-index: 2;
         }
+
 
         .form-signin input[type="email"] {
             margin-bottom: -1px;
@@ -87,6 +90,11 @@
     <p style="color: red">Username and Password didn't match.<br>Please try again.</p>
   {% endif %}
       <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+  <p></p>
+<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-block btn-social btn-facebook" style="color:white">
+  <span class="fa fa-facebook"></span>
+  Sign in with Facebook
+</a>
   <p></p>
     <a href="{% url 'tinder:signup' %}">New to Match and Learn? Sign up now!</a></br>
   <a href="{% url 'tinder:password_reset' %}">Forgot password?</a>
