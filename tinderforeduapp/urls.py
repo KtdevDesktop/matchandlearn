@@ -6,6 +6,7 @@ from django.conf.urls import url
 from django.contrib.auth.views import LoginView, LogoutView,PasswordResetView, PasswordResetDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView
 from django.conf.urls import include
+from django.views.generic import TemplateView
 
 from . import views as core_views
 
@@ -32,4 +33,5 @@ urlpatterns = [
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     url(r'^reset/done/$', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('privacypolicy/', TemplateView.as_view(template_name="tinder/privacy.html"), name='privacy'),
 ]
