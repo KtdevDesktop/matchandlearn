@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from .forms import SignUpForm , CommentForm
+from .forms import SignUpForm, CommentForm, AdditionalForm
 from .models import Userinfo, Subject,match_class,request_class, Comment, User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -54,18 +54,18 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'tinder/signup.html', {'form': form})
 
-def activate(request, uidb64, token):
+def activate(request, uidb64, token, backend='django.contrib.auth.backends.ModelBackend'):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
+        user.profile.email_confirmed = True
         user.save()
-        login(request, user)
-        # return redirect('home')
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return render(request,'tinder/Activation_success.html')
     else:
         return HttpResponse('''Activation link is invalid! <META HTTP-EQUIV="Refresh" CONTENT="5;URL=/login">''')
@@ -113,9 +113,30 @@ def another_profile(request,user_id):
                                                            name=request.user.username).match.all(),
                                                        'profile': Userinfo.objects.get(id=user_id),'check':1,"chat_room_name":Url_chat})
     return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
+
+
+def adddata(request):
+    if request.method == "POST":
+        form = AdditionalForm(request.POST)
+        if form.is_valid():
+            age = form.cleaned_data.get('age')
+            school = form.cleaned_data.get('school')
+            bio = form.cleaned_data.get('bio')
+            adddata = Userinfo.objects.get(name=request.user.username)
+            adddata.age = age
+            adddata.school = school
+            adddata.bio = bio
+            adddata.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = AdditionalForm()
+    return render(request, 'tinder/adddata.html', {'form': form})
+
 def home_page(request):
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
         return HttpResponseRedirect('/login')
+    if Userinfo.objects.get(name=request.user.username).school == '':
+        return HttpResponseRedirect('/adddata')
     if request.POST.get('subject_find'):
         what_sub = request.POST['subject_find']
         if request.POST['filter'] != "" and request.POST['location_school'] !=" ":

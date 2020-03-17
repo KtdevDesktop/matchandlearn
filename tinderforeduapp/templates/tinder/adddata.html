@@ -8,9 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Match and Learn</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-social.css'%}">
-    <link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
-    <link href="{% static 'css/docs.css'%}" rel="stylesheet" >
+
     <style>
         html,
         body {
@@ -46,7 +44,6 @@
             z-index: 2;
         }
 
-
         .form-signin input[type="email"] {
             margin-bottom: -1px;
             border-bottom-right-radius: 0;
@@ -63,9 +60,6 @@
             width: 50%;
         }
 
-        .myrow {
-            background-color: #f6f4e6;
-        }
 
         .myfooter {
             background-color: #f6eedf;
@@ -73,31 +67,37 @@
     </style>
 
 </head>
+
+
 {% block content %}
     <body class="text-center">
   <form class="form-signin" method="post">
   <img src="/static/img/logo.png" alt="" class="rounded mb-4">
     <h2 class="h3 mb-3 font-weight-normal">Match and Learn</h2>
+  <p>It seems like this is your first-time login.</br>Please enter some information below to continue.</p>
     {% csrf_token %}
     <input type="hidden" name="login" value="{{ next }}" />
     {% for field in form %}
-      <input class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.html_name }}" maxlength="30" name="{{ field.html_name }}" type="{{ field.html_name }}"/>
+        {% if forloop.counter0 < 2 %}
+      <input class="form-control" id="{{ field.id_for_label }}" placeholder="{% if forloop.counter0 == 0 %}Age{% elif forloop.counter0 == 1 %}School{% endif %}" name="{{ field.html_name }}" type="text"/><p></p>
+        {% else %}
+   <select class="custom-select" name="bio" id="id_bio">
+   <option selected disabled>Gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+   </select>
+            <p></p>
+        {% endif %}
     {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
     {% endfor %}
-  {% if form.errors %}
-    <p style="color: red">Username and Password didn't match.<br>Please try again.</p>
-  {% endif %}
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+  {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Continue</button>
   <p></p>
-<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-block btn-social btn-facebook" style="color:white">
-  <span class="fa fa-facebook"></span>
-  Continue with Facebook
-</a>
-  <p></p>
-    <a href="{% url 'tinder:signup' %}">New to Match and Learn? Sign up now!</a></br>
-  <a href="{% url 'tinder:password_reset' %}">Forgot password?</a>
   </form>
     </body>
 {% endblock %}

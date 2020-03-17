@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Comment
+from .models import Comment, Userinfo
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=100)
@@ -30,3 +30,16 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('comment','star',)
+
+class AdditionalForm(forms.ModelForm):
+    Gender = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+    age = forms.CharField(max_length=10)
+    school = forms.CharField(max_length=100)
+    bio = forms.CharField(label="Choose your gender", widget=forms.Select(choices=Gender))
+    class Meta:
+        model = Userinfo
+        fields = ('age','school','bio',)

@@ -34,4 +34,5 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     url(r'^reset/done/$', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('privacypolicy/', TemplateView.as_view(template_name="tinder/privacy.html"), name='privacy'),
+    path('adddata/', views.adddata, name ='adddata')
 ]

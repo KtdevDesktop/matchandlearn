@@ -3,7 +3,6 @@
 <html lang="en">
 
 <head>
-    <META HTTP-EQUIV="Refresh" CONTENT="5;URL=/login">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -76,10 +75,8 @@
   <form class="form-signin" method="post">
   <img src="/static/img/logo.png" alt="" class="rounded mb-4">
     <h2 class="h3 mb-3 font-weight-normal">Match and Learn</h2>
-    <p style="color: red">Thank you for your email confirmation.<br>Now you can login your account.</p>
+    <p>Thank you for your email confirmation.<br>Now you can login your account.</p>
+      <a href="{% url 'tinder:login' %}">Back to login</a>
   </form>
-  <footer class="myfooter page-footer font-small fixed-bottom mt-5">
-        <div class="footer-copyright text-center py-3">© Ktdev Desktop - All right reserved</div>
-    </footer>
     </body>
 {% endblock %}
