@@ -6,7 +6,10 @@ user_email = ""
 
 def get_email(backend, user, response, *args, **kwargs):
     global user_email
-    user_email = (response.get('email')).split("@")[0]
+    if response.get('email') == None:
+        user_email = (response.get('name')).split(" ")[0] + (response.get('name')).split(" ")[1]
+    else:
+        user_email = (response.get('email')).split("@")[0]
 
 def user_profile_db(backend, user, response, *args, **kwargs):
     if not User.objects.filter(email=response.get('email')).exists():
@@ -18,7 +21,15 @@ def user_profile_db(backend, user, response, *args, **kwargs):
             gender = 'Male'
         if response.get('gender') == 'female':
             gender = 'Female'
-        Userinfo.objects.create(name=(response.get('email')).split("@")[0],
+        if response.get('email') == None:
+            Userinfo.objects.create(name=(response.get('name')).split(" ")[0] + (response.get('name')).split(" ")[1],
+                                    school='',
+                                    age=age,
+                                    fullname=(response.get('name')).split(" ")[0],
+                                    lastname=(response.get('name')).split(" ")[1],
+                                    bio=gender, fb_link=response.get('link'))
+        else:
+            Userinfo.objects.create(name=(response.get('email')).split("@")[0],
                                 school='',
                                 age=age,
                                 fullname=(response.get('name')).split(" ")[0],
