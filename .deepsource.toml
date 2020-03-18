@@ -1,5 +1,12 @@
 version = 1
 
+test_patterns = [
+    "*.py",
+    "*/chat/*.py",
+    "*/tinderforeduapp/*.py",
+    "*/tinderforedu/*.py"
+]
+
 [[analyzers]]
 name = "python"
 enabled = true
