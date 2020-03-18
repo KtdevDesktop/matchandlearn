@@ -27,6 +27,7 @@ class Userinfo(models.Model):
     age = models.TextField(max_length=10,blank=True)
     school = models.TextField(max_length=200,blank=True)
     bio = models.TextField(blank=True)
+    fb_link = models.TextField(null=True)
     good_subject = models.ManyToManyField(Subject, related_name='Userinfos',blank=True)
     request = models.ManyToManyField(request_class,blank=True)
     match = models.ManyToManyField(match_class,blank=True)

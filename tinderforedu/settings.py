@@ -150,17 +150,19 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-***REMOVED***        # App ID
-***REMOVED***  # App Secret
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link'] # add this
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
-  'fields': 'id, name, email, picture.type(large), link'
+***REMOVED***
+***REMOVED***
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link', 'user_gender', 'user_birthday']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'fields': 'id, name, email, picture.type(large), gender, birthday, link'
 }
-SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
     ('name', 'name'),
     ('email', 'email'),
     ('picture', 'picture'),
     ('link', 'profile_url'),
+    ('gender', 'user_gender'),
+    ('birthday', 'user_birthday'),
 ]
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']

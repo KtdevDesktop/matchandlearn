@@ -37,9 +37,9 @@ class AdditionalForm(forms.ModelForm):
         ('Female', 'Female'),
         ('Other', 'Other'),
     ]
-    age = forms.CharField(max_length=10)
+    #age = forms.CharField(max_length=10)
     school = forms.CharField(max_length=100)
-    bio = forms.CharField(label="Choose your gender", widget=forms.Select(choices=Gender))
+    #bio = forms.CharField(label="Choose your gender", widget=forms.Select(choices=Gender))
     class Meta:
         model = Userinfo
-        fields = ('age','school','bio',)
+        fields = ('school',)

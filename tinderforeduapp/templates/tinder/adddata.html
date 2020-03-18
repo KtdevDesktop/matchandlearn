@@ -79,7 +79,7 @@
     <input type="hidden" name="login" value="{{ next }}" />
     {% for field in form %}
         {% if forloop.counter0 < 2 %}
-      <input class="form-control" id="{{ field.id_for_label }}" placeholder="{% if forloop.counter0 == 0 %}Age{% elif forloop.counter0 == 1 %}School{% endif %}" name="{{ field.html_name }}" type="text"/><p></p>
+      <input class="form-control" id="{{ field.id_for_label }}" placeholder="School" name="{{ field.html_name }}" type="text"/><p></p>
         {% else %}
    <select class="custom-select" name="bio" id="id_bio">
    <option selected disabled>Gender</option>

@@ -69,7 +69,7 @@ bg{
     <li><a name = "Chat" href="">Chat</a></li>
     <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
-    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.username }}</a></li>
+    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
 </ul>
     <img src="{% static 'photo_home/image/logo.png' %}" width="1544" height="500">
    <p>search for some one you're looking for</p>

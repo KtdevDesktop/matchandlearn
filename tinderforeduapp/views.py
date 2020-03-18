@@ -119,13 +119,9 @@ def adddata(request):
     if request.method == "POST":
         form = AdditionalForm(request.POST)
         if form.is_valid():
-            age = form.cleaned_data.get('age')
             school = form.cleaned_data.get('school')
-            bio = form.cleaned_data.get('bio')
             adddata = Userinfo.objects.get(name=request.user.username)
-            adddata.age = age
             adddata.school = school
-            adddata.bio = bio
             adddata.save()
             return HttpResponseRedirect('/')
     else:
