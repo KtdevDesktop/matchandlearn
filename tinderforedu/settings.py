@@ -95,7 +95,7 @@ ASGI_APPLICATION = 'tinderforedu.routing.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASES['default'] = dj_database_url.config()
 
 if not os.path.isfile(dotenv_file):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
