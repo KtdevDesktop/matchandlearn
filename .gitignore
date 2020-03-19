@@ -1,1 +1,10 @@
 .env
+db.sqlite3
+.idea/*
+__pycache__/*
+chat/__pycache__/*
+chat/migrations/__pycache__/*
+tinderforedu/__pycache__/*
+tinderforedu/migrations/__pycache__/*
+tinderforeduapp/__pycache__/*
+tinderforeduapp/migrations/__pycache__/*
