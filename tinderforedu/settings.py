@@ -95,7 +95,15 @@ ASGI_APPLICATION = 'tinderforedu.routing.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=5)
+DATABASES['default'] = dj_database_url.config(engine='django_postgrespool2')
+
+DATABASE_POOL_CLASS = 'sqlalchemy.pool.QueuePool'
+
+DATABASE_POOL_ARGS = {
+    'max_overflow': 10,
+    'pool_size': 5,
+    'recycle': 300
+}
 
 if not os.path.isfile(dotenv_file):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -14,6 +14,7 @@ django-allauth==0.41.0
 django-braces==1.14.0
 django-cors-headers==3.2.1
 django-model-utils==4.0.0
+django-postgrespool2
 django-rest-auth==0.9.5
 django-tenants==3.0.0
 django-redis==4.11.0
