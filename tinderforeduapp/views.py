@@ -13,6 +13,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
+from django.db import connection
 
 # Create your views here.
 
@@ -144,7 +145,9 @@ def home_page(request):
                                                      school=request.POST['location_school'])
         else:
             select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
+        connection.close()
         return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": what_sub})
+    connection.close()
     return render(request,'tinder/home.html',{'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
 def select_delete(request,user_id):
     User1 = Userinfo.objects.get(id=user_id)
