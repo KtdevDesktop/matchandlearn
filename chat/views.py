@@ -4,7 +4,6 @@ from .models import Savechat
 from django import db
 
 def index(request):
-    db.connections.close_all()
     return render(request, 'chat/index.html', {})
 def room(request, room_name):
     db.connections.close_all()

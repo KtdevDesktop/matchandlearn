@@ -209,6 +209,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_URL = '/'
 
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
 DEFAULT_FROM_EMAIL = 'Match and learn <admin@matchandlearn.social>'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.zoho.com'
