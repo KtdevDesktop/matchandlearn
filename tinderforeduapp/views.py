@@ -132,9 +132,6 @@ def adddata(request):
     return render(request, 'tinder/adddata.html', {'form': form})
 
 def home_page(request):
-
-    close_old_connections()
-    db.connection.close()
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
         return HttpResponseRedirect('/login')
     if Userinfo.objects.get(name=request.user.username).school == '':
@@ -151,6 +148,8 @@ def home_page(request):
         else:
             select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": what_sub})
+    close_old_connections()
+    db.connection.close()
     return render(request,'tinder/home.html',{ 'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
 def select_delete(request,user_id):
     User1 = Userinfo.objects.get(id=user_id)

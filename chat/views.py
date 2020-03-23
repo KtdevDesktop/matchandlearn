@@ -6,8 +6,6 @@ from django.db import close_old_connections
 def index(request):
     return render(request, 'chat/index.html', {})
 def room(request, room_name):
-    close_old_connections()
-    db.connection.close()
     splitlog = []
     log = ""
     user = room_name.split("_")
@@ -20,6 +18,8 @@ def room(request, room_name):
             splitlog = log.split("`~`~`~`~`~`")
             usercheck1 = Savechat.objects.get(name=room_name).user1
             usercheck2 = Savechat.objects.get(name=room_name).user2
+    close_old_connections()
+    db.connection.close()
     return render(request, 'chat/room.html', {'room_name': room_name,
                                                       'log': log,
                                                       'usercheck1': usercheck1,
