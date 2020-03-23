@@ -132,6 +132,7 @@ def adddata(request):
     return render(request, 'tinder/adddata.html', {'form': form})
 
 def home_page(request):
+
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
         return HttpResponseRedirect('/login')
     if Userinfo.objects.get(name=request.user.username).school == '':
