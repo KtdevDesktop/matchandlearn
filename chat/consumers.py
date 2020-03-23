@@ -2,9 +2,11 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
 from .models import Savechat
+from django.db import close_old_connections
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
+        close_old_connections()
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
         if not Savechat.objects.filter(name = self.room_name).exists():
@@ -23,6 +25,7 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+        close_old_connections()
 
     # Receive message from WebSocket
     def receive(self, text_data):
