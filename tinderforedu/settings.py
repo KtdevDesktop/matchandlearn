@@ -96,7 +96,6 @@ ASGI_APPLICATION = 'tinderforedu.routing.application'
 
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config()
-DATABASES['default']['CONN_MAX_AGE'] = 0
 
 if not os.path.isfile(dotenv_file):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -222,3 +221,4 @@ EMAIL_PORT = 587
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
+DATABASES['default']['CONN_MAX_AGE'] = 0
