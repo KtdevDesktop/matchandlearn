@@ -1,12 +1,13 @@
 # chat/views.py
 from django.shortcuts import render
 from .models import Savechat
-from django.db import close_old_connections
+from django import db
 
 def index(request):
+    db.connections.close_all()
     return render(request, 'chat/index.html', {})
 def room(request, room_name):
-    close_old_connections()
+    db.connections.close_all()
     splitlog = []
     log = ""
     user = room_name.split("_")
