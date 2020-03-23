@@ -68,6 +68,7 @@ bg{
     <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
     <li><a name = "Chat" href="">Chat</a></li>
     <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
+    <li><a name = 'numcon'>{{ numcon }}</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
     <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
 </ul>

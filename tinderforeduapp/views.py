@@ -13,7 +13,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
-from django.db import connection
+from django import db
 
 # Create your views here.
 
@@ -50,7 +50,9 @@ def signup(request):
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
+            db.connection.close()
             return render(request,'tinder/email_sent.html')
+
     else:
         form = SignUpForm()
     return render(request, 'tinder/signup.html', {'form': form})
@@ -113,7 +115,7 @@ def another_profile(request,user_id):
                                                        'test': Userinfo.objects.get(
                                                            name=request.user.username).match.all(),
                                                        'profile': Userinfo.objects.get(id=user_id),'check':1,"chat_room_name":Url_chat})
-    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
+    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat,"numcon":numcon})
 
 
 def adddata(request):
@@ -130,6 +132,12 @@ def adddata(request):
     return render(request, 'tinder/adddata.html', {'form': form})
 
 def home_page(request):
+    numcon = len(db.connection.queries)
+    for i in db.connections:
+        i.close()
+    for i in db.connection:
+        i.close()
+    db.connection.close()
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
         return HttpResponseRedirect('/login')
     if Userinfo.objects.get(name=request.user.username).school == '':
@@ -146,7 +154,7 @@ def home_page(request):
         else:
             select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
         return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": what_sub})
-    return render(request,'tinder/home.html',{'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
+    return render(request,'tinder/home.html',{'numcon':numcon, 'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
 def select_delete(request,user_id):
     User1 = Userinfo.objects.get(id=user_id)
     modelget = get_object_or_404(Userinfo, id=user_id)

@@ -2,11 +2,12 @@
 from django.shortcuts import render
 from .models import Savechat
 from django import db
-
 def index(request):
     return render(request, 'chat/index.html', {})
 def room(request, room_name):
-    db.connections.close_all()
+    for i in db.connections:
+        i.close()
+    db.connection.close()
     splitlog = []
     log = ""
     user = room_name.split("_")
