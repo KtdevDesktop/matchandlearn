@@ -2,11 +2,11 @@
 from django.shortcuts import render
 from .models import Savechat
 from django import db
+from django.db import close_old_connections
 def index(request):
     return render(request, 'chat/index.html', {})
 def room(request, room_name):
-    for i in db.connections:
-        i.close()
+    close_old_connections()
     db.connection.close()
     splitlog = []
     log = ""
