@@ -115,7 +115,7 @@ def another_profile(request,user_id):
                                                        'test': Userinfo.objects.get(
                                                            name=request.user.username).match.all(),
                                                        'profile': Userinfo.objects.get(id=user_id),'check':1,"chat_room_name":Url_chat})
-    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat,"numcon":numcon})
+    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
 
 
 def adddata(request):
