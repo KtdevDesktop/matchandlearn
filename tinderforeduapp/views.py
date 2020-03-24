@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from .forms import SignUpForm, CommentForm, AdditionalForm
-from .models import Userinfo, Subject,match_class,request_class, Comment, User
+from .forms import SignUpForm, CommentForm, AdditionalForm, Editprofileform
+from .models import Userinfo, Subject,match_class,request_class, Comment, User,Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.shortcuts import render
@@ -79,8 +79,8 @@ def your_subject_page(request,user_id):
         U1=Userinfo.objects.get(name=request.user.username)
         U1.good_subject.add(subject)
         U1.save()
-        return render(request, 'tinder/your_subject.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
-    return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
+        return render(request, 'tinder/your_subject.html', {'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
+    return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
 def successlogin(request):
     if request.POST.get('login'):
         return render(request, 'tinder/home.html', {'name': request.user.username })
@@ -269,3 +269,20 @@ def watch_profile(request,user_id):
         return HttpResponseRedirect(reverse('tinder:students_list', args=(Username.id,)))
     return render(request,'tinder/watch_profile.html',{'profile':Userinfo.objects.get(id=user_id),'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
 
+def edit_profile(request,user_id):
+    form = Editprofileform(instance=request.user.profile)
+    if request.POST.get('edit_profile'):
+        U1 =  Userinfo.objects.get(id=user_id)
+        form = Editprofileform(request.POST,instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            form.refresh_from_db()
+            U1.fullname = form.cleand_data.get['first_name']
+            U1.lastname = form.cleaned_data.get['last_name']
+            U1.school = form.cleaned_data.get['college']
+            U1.age = form.cleaned_data.get['age']
+            U1.bio = form.cleaned_data.get['bio']
+            U1.save()
+
+        return HttpResponseRedirect(reverse('tinder:your_subject', args=(user_id,)))
+    return render(request,'tinder/edit_profile.html',{'form':form})
