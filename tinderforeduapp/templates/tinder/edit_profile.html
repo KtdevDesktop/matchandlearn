@@ -1,15 +1,102 @@
-<!DOCTYPE html>
+<!DOCTYPE html> {% load static %}
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Edit your proFile</title>
-        {{ form }}
-    <form method="POST">
-        <input name="edit_profile" type="submit" value="Edit">
-        {% csrf_token %}
-    </form>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Match and Learn</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}">
 
-</body>
-</html>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .form-signin img {
+            width: 50%;
+        }
+
+
+        .myfooter {
+            background-color: #f6eedf;
+        }
+    </style>
+
+</head>
+
+
+{% block content %}
+    <body class="text-center">
+  <form class="form-signin" method="POST">
+  <img src="/static/img/logo.png" alt="" class="rounded mb-4">
+    <h2 class="h3 mb-3 font-weight-normal">Match and Learn</h2>
+  <p>You can edit profile here.</br>Type info that you want to change and click Continue.</p>
+    {% csrf_token %}
+    {% for field in form %}
+      {% if forloop.counter0 < 4 %}
+      <input class="form-control" required id="{{ field.id_for_label }}" placeholder="{{ field.html_name|title }}" name="{{ field.html_name }}" type="text"/><p></p>
+    {% else %}
+      <select class="custom-select" name="bio" id="id_bio">
+   <option selected disabled>Gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+   </select>
+            <p></p>
+        {% endif %}
+      {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+    {% endfor %}
+  {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Continue</button>
+  <p></p>
+  </form>
+    </body>
+{% endblock %}
