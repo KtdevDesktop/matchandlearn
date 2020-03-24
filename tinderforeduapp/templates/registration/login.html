@@ -78,6 +78,7 @@
   <form class="form-signin" method="post">
   <img src="/static/img/logo.png" alt="" class="rounded mb-4">
     <h2 class="h3 mb-3 font-weight-normal">Match and Learn</h2>
+    <a name = "About" href="{% url 'tinder:aboutus' %}">About Match and Learn</a><p></p>
     {% csrf_token %}
     <input type="hidden" name="login" value="{{ next }}" />
     {% for field in form %}
