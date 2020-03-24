@@ -7,6 +7,7 @@ from django.dispatch import receiver
 
 class Subject(models.Model):
     subject_name = models.TextField(max_length=200, blank=True)
+    subject_keep = models.TextField(max_length=200, blank=True)
     def __str__(self):
         return self.subject_name
 
@@ -26,6 +27,7 @@ class Userinfo(models.Model):
     lastname = models.TextField(max_length=200, blank=True)
     age = models.TextField(max_length=10,blank=True)
     school = models.TextField(max_length=200,blank=True)
+    schoolkey = models.TextField(max_length=200,blank=True)
     bio = models.TextField(blank=True)
     fb_link = models.TextField(null=True)
     good_subject = models.ManyToManyField(Subject, related_name='Userinfos',blank=True)

@@ -38,7 +38,7 @@ def signup(request):
             user.profile.college = form.cleaned_data.get('college')
             user.profile.age = form.cleaned_data.get('age')
             user.profile.bio = form.cleaned_data.get('bio')
-            Userinfo.objects.create(name=user.username, school=user.profile.college, age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name,bio =user.profile.bio)
+            Userinfo.objects.create(name=user.username, school=user.profile.college,schoolkey=stringforschool(user.profile.college), age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name,bio =user.profile.bio)
             user.save()
             current_site = get_current_site(request)
             mail_subject = 'Please verify your email address.'
@@ -75,7 +75,7 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
 
 def your_subject_page(request,user_id):
     if request.POST.get('subject_good'):
-        subject = Subject.objects.create(subject_name=request.POST['subject_good'])
+        subject = Subject.objects.create(subject_name=request.POST['subject_good'],subject_keep=stringforsearch(request.POST['subject_good']))
         U1=Userinfo.objects.get(name=request.user.username)
         U1.good_subject.add(subject)
         U1.save()
@@ -125,6 +125,7 @@ def adddata(request):
             school = form.cleaned_data.get('school')
             adddata = Userinfo.objects.get(name=request.user.username)
             adddata.school = school
+            adddata.schoolkey = stringforschool(school)
             adddata.save()
             return HttpResponseRedirect('/')
     else:
@@ -132,23 +133,23 @@ def adddata(request):
     return render(request, 'tinder/adddata.html', {'form': form})
 
 def home_page(request):
-
+    """search here"""
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
         return HttpResponseRedirect('/login')
     if Userinfo.objects.get(name=request.user.username).school == '':
         return HttpResponseRedirect('/adddata')
     if request.POST.get('subject_find'):
-        what_sub = request.POST['subject_find']
+        what_sub = stringforsearch(request.POST['subject_find'])
         if request.POST['filter'] != "" and request.POST['location_school'] !=" ":
-            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'],school=request.POST['location_school'],bio=request.POST['filter'])
+            select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub,schoolkey=stringforschool(request.POST['location_school']),bio=request.POST['filter'])
         elif request.POST['filter'] != "":
-            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'],bio=request.POST['filter'])
+            select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub,bio=request.POST['filter'])
         elif request.POST['location_school'] != "":
-            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'],
-                                                     school=request.POST['location_school'])
+            select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub,
+                                                     schoolkey=stringforschool(request.POST['location_school']))
         else:
-            select_sub = Userinfo.objects.filter(good_subject__subject_name=request.POST['subject_find'])
-        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": what_sub})
+            select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub)
+        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": request.POST['subject_find']})
     close_old_connections()
     db.connection.close()
     return render(request,'tinder/home.html',{ 'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
@@ -277,6 +278,7 @@ def edit_profile(request,user_id):
             U1.fullname = form.cleaned_data.get('fullname')
             U1.lastname = form.cleaned_data.get('lastname')
             U1.school = form.cleaned_data.get('school')
+            U1.schoolkey = stringforschool(form.cleaned_data.get('school'))
             U1.age = form.cleaned_data.get('age')
             U1.bio = form.cleaned_data.get('bio')
             U1.save()
@@ -284,3 +286,11 @@ def edit_profile(request,user_id):
     else:
         form = Editprofileform()
     return render(request,'tinder/edit_profile.html',{'form':form})
+def stringforsearch(keyword):
+    keyword = keyword.lower()
+    keyword = keyword.replace(' ', '')
+    return keyword
+def stringforschool(keyword):
+    keyword = keyword.upper()
+    keyword = keyword.replace(' ','')
+    return keyword
