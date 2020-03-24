@@ -21,11 +21,13 @@
         {% else %}
 <form method="post" action="{% url 'tinder:match' profile.id %}">
     {% csrf_token %}
-    <label for="text_request">Tell something</label>
-    <textarea id ="text_request" name="text_request" type="text" row="4" cols="100" ></textarea>
     <button name="match" value="match" >Match</button>
 </form>
     {% endif %}
+    <form method="post" action="{% url 'chat:room' chat_room_name %}" target="_blank">
+    {% csrf_token %}
+    <button name="room" value="room" >chat room</button>
+</form>
 <a href="{% url 'tinder:home' %}">go back to home</a>
 
 </body>

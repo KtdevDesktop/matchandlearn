@@ -19,8 +19,7 @@
     <button name="accept" value="accept" >accept</button>
     <button name="decline" value="decline" >decline</button>
     </form>
-    <p>Explain about himself/herself
-        {{ request.request_message }}</p>
+
     <form method="post" action="{% url 'chat:room' chat_room_name %}" target="_blank">
     {% csrf_token %}
     <button name="room" value="room" >chat room</button>
