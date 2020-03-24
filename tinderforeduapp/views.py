@@ -180,8 +180,8 @@ def match(request,user_id):
     Url_list = [Username.name, match_guy.name]
     Url_list_sort = sorted(Url_list)
     Url_chat = Url_list_sort[0] + "_"+Url_list_sort[1]
-    if request.POST.get('match'):
-        user_name = request_class.objects.create(request_list=Username.name)
+    if request.method == "POST":
+        user_name = request_class.objects.create(request_list=Username.name,request_message=request.POST['text_request'])
         match_guy.request.add(user_name)
         Userinfo.objects.get(id=user_id).notify()
         Userinfo.objects.get(id=user_id).save()
@@ -230,7 +230,7 @@ def profile_accept(request,user_id):
         request_obj = Username.request.get(request_list=match_guy.name)
         Username.request.remove(request_obj)
         return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
-    return render(request,'tinder/profile_accept.html',{'chat_room_name':chat_room_name,'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all()})
+    return render(request,'tinder/profile_accept.html',{'chat_room_name':chat_room_name,'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'request': Username.request.get(request_list=match_guy.name)})
 def students_list(request,user_id):
     match_list_id = Userinfo.objects.get(name=request.user.username).match.all()
     list_match = {}
