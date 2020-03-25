@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
+
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -52,6 +56,23 @@ li a:hover:not(.active) {
       background: red;
       color: white;
     }
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button2 {background-color: #008CBA;} /* Blue */
+.button3 {background-color: #f44336;} /* Red */
+.button4 {background-color: #e7e7e7; color: black;} /* Gray */
+
 bg{
     background-position:center;
 }
@@ -60,9 +81,9 @@ bg{
 <ul>
   <li><a href="/">Home</a></li>
   <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
-    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
+    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Student request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
     <li><a name = "About us" href="{% url 'tinder:aboutus' %}">About</a></li>
-    <li><a name = "Chat" href="">Chat</a></li>
+
     <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
     <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
@@ -71,13 +92,16 @@ bg{
 <body>
 
      {% for key,value in list_match.items %}
+
             <form method="post" action="{% url 'chat:room' value %}" target="_blank">
-                <a href="{% url 'tinder:watch_profile' key.id %}">{{ key }}</a>
+            <div class="w3-display-container w3-white" >
+                <div class="w3-container w3-teal" onclick="location.href='{% url 'tinder:watch_profile' key.id %}'"  ><h1>{{ key.fullname }} {{ key.lastname }}</h1><p>Gender: {{ key.bio }} <p/><p>Age: {{ key.age }} <p/></div>
 
     {% csrf_token %}
-                <button name="room" value="room" >chat room</button>
-            </form></td>
+                <div class="w3-display-bottomright"><button class="button button4" name="room" value="room" >chat room</button></div></div>
+            </form>
     {% endfor %}
-    <a href="{% url 'tinder:home' %}">go back to home</a>
+
+
 </body>
 </html>

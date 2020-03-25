@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 ul {
   list-style-type: none;
@@ -60,9 +62,9 @@ bg{
 <ul>
   <li><a href="/">Home</a></li>
   <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
-    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
+    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Student request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
     <li><a name = "About us" href="{% url 'tinder:aboutus' %}">About</a></li>
-    <li><a name = "Chat" href="">Chat</a></li>
+
     <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
     <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
@@ -72,13 +74,14 @@ bg{
      <table id="good_subject_table">
     <form action="{% url 'tinder:match_request' name.id %}" method="post">
     {% for list_match in list_match %}
-        <a href="/{{ list_match.id }}/profile_accept">{{ list_match.name }}</a></td>
+
+        <div class="w3-container w3-teal" onclick='location.href="/{{ list_match.id }}/profile_accept"'><h1>{{ list_match.fullname }} {{ list_match.lastname }}</h1><p>Gender : {{ list_match.bio }}</p><p> age: {{ list_match.age  }}</p></div></td>
     {% endfor %}
 
          {% csrf_token %}
     </form>
     </table>
-    <a href="{% url 'tinder:home' %}">go back to home</a>
+
 </head>
 <body>
 
