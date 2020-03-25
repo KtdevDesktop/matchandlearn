@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<!DOCTYPE html>
-<html lang="en">
-<style>
+<!DOCTYPE html> {% load static %}
+<html>
+<head>
+    <style>
 ul {
   list-style-type: none;
   margin: 0;
@@ -58,7 +57,29 @@ bg{
     background-position:center;
 }
 </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{{ profile.fullname }}'s Profile</title>
+    <!-- favicon -->
+    <!-- web-fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:300,400,500,600,700" rel="stylesheet">
+    <!-- font-awesome -->
+    <link href="{% static 'profile/css/font-awesome.min.css'%}" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="{% static 'profile/css/bootstrap.min.css'%}" rel="stylesheet">
+    <!-- Style CSS -->
+    <link href="{% static 'profile/css/style.css'%}" rel="stylesheet">
 
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
 <ul>
   <li><a href="/">Home</a></li>
   <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
@@ -70,33 +91,123 @@ bg{
     <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
     <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
 </ul>
-<head>
-   <img src="{{ pic.images.url }}" >
-    <p id="fullname_id">First name: {{ profile.fullname }}</p>
-    <p id="lastname_id">Last name: {{ profile.lastname }}</p>
-    <p id="age_id">age: {{ profile.age }}</p>
-     <p id="school_id">school: {{profile.school }}</p>
-    <p id ="bio">gender : {{ profile.bio }}</p>
-</head>
-<body>
-    {% for subject_name in subject.all %}
-       <p>{{ forloop.counter }}:{{ subject_name }}</p>
+<body id="page-top" data-spy="scroll" data-target=".navbar">
+<div id="main-wrapper">
+<!-- Page Preloader -->
+<div id="preloader">
+    <div id="status">
+        <div class="status-mes"></div>
+    </div>
+</div>
+    <div class="columns-block container">
+<div class="left-col-block blocks">
+    <header class="header theiaStickySidebar">
+        <div class="profile-img">
+            <h1>{{ profile.fullname }}'s Profile :</h1>
+            <img src="{{ pic.images.url }}" class="img-responsive" alt=""/>
+        </div>
+        <div class="content">
+            <h1>{{ profile.fullname }} {{ profile.lastname }}</h1>
+            <div class="about-text">
+                <p id="age_id">age: {{ profile.age }}</p>
+                <p id="school_id">school: {{profile.school }}</p>
+                <p id ="bio">gender: {{ profile.bio }}</p>
+            </div>
+        </div>
+    </header>
+    <!-- .header-->
+</div>
+<!-- .left-col-block -->
+
+
+<div class="right-col-block blocks">
+<div class="theiaStickySidebar">
+<section class="expertise-wrapper section-wrapper gray-bg">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    {% if not check %}
+                    <h2>Do you want to match this person?</h2>
+                    {% else %}
+                    <h2>Want to change your mind?</h2>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- .row -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="expertise-item">
+                    {% if check %}
+                    <form method="post" action="{% url 'tinder:unmatched' profile.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-primary"  name="Unmatched" value="Unmatched" >Unmatched</button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{% url 'tinder:match' profile.id %}">
+                        {% csrf_token %}
+                        <label for="text_request">Tell something about yourself</label>
+                        <input class="form-control" id ="text_request" name="text_request" type="text" row="4" cols="100" ><p></p>
+                        <button class="btn btn-primary"  name="match" value="match" >Match</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <section class="section-contact section-wrapper gray-bg">
+    <div>
+      <h2>Expertise subject : </h2>
+        {% for subject_name in subject.all %}
+       <h3>{{ subject_name }}</h3>
     {% endfor %}
-    {% if check %}
-    <form method="post" action="{% url 'tinder:unmatched' profile.id %}">
-    {% csrf_token %}
-    <button name="Unmatched" value="Unmatched" >Unmatched</button>
-</form>
-        {% else %}
-<form method="post" action="{% url 'tinder:match' profile.id %}">
-    {% csrf_token %}
-    <label for="text_request">Tell something</label>
-    <textarea id ="text_request" name="text_request" type="text" row="4" cols="100" ></textarea>
-    <button name="match" value="match" >Match</button>
-</form>
-    {% endif %}
+    </div>
+</section>
 
-<a href="{% url 'tinder:home' %}">go back to home</a>
+<section class="section-contact section-wrapper gray-bg">
+    <div>
+      <h2>Comment</h2>
+    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>{{ comments.count }} comments</h2>
 
+        {% for comment in comments %}
+        <div class="comments" style="padding: 10px;">
+          <p class="font-weight-bold">
+            {{ comment.name }}
+            <span class=" text-muted font-weight-normal">
+              {{ comment.created_on }}
+            </span>
+          </p>
+           Comment : {{ comment.comment }} </br>
+           Star : {{ comment.star }}
+        </div>
+        {% endfor %}
+            </div>
+        </div>
+    <!--.container-fluid-->
+</section>
+<!--.section-contact-->
+
+<!-- .footer -->
+</div>
+<!-- Sticky -->
+</div>
+<!-- .right-col-block -->
+</div>
+<!-- .columns-block -->
+</div>
+<!-- #main-wrapper -->
+
+<!-- jquery -->
+<script src="{% static 'profile/js/jquery-2.1.4.min.js'%}"></script>
+
+<!-- Bootstrap -->
+<script src="{% static 'profile/js/bootstrap.min.js'%}"></script>
+<script src="{% static 'profile/js/theia-sticky-sidebar.js'%}"></script>
+<script src="{% static 'profile/js/scripts.js'%}"></script>
 </body>
 </html>

@@ -90,6 +90,8 @@ def successlogin(request):
     if request.POST.get('login'):
         return render(request, 'tinder/home.html', {'name': request.user.username })
 def another_profile(request,user_id):
+    pic = Profilepic.objects.get(user=user_id)
+    comments = Comment.objects.filter(post=request.user.id)
     modelget = get_object_or_404(Userinfo,id=user_id)
     Username = Userinfo.objects.get(name=request.user.username)
     match_guy = Userinfo.objects.get(id=user_id)
@@ -115,12 +117,12 @@ def another_profile(request,user_id):
             a1.comment_value = star_score
             a1.save()
     if match_guy.request.filter(request_list=Username.name).exists():
-        return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
+        return render(request, 'tinder/profile.html', {'comments': comments,'pic':pic,'name': Userinfo.objects.get(name=request.user.username),
                                                        'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                        'test': Userinfo.objects.get(
                                                            name=request.user.username).match.all(),
                                                        'profile': Userinfo.objects.get(id=user_id),'check':1,"chat_room_name":Url_chat})
-    return render(request,'tinder/profile.html',{'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
+    return render(request,'tinder/profile.html',{'comments': comments,'pic':pic,'profile': modelget,'subject':modelget.good_subject.all(),'name': Userinfo.objects.get(name =request.user.username),"chat_room_name":Url_chat})
 
 
 def adddata(request):
@@ -193,6 +195,8 @@ def match_request(request,user_id):
     return render(request,'tinder/match_request.html',{'name':Userinfo.objects.get(name=request.user.username),'match_request':Userinfo.objects.get(name=request.user.username).request.all(),'list_match':list_match})
 def match(request,user_id):
     Username = Userinfo.objects.get(name=request.user.username)
+    pic = Profilepic.objects.get(user=user_id)
+    comments = Comment.objects.filter(post=request.user.id)
     match_guy = Userinfo.objects.get(id=user_id)
     Url_list = [Username.name, match_guy.name]
     Url_list_sort = sorted(Url_list)
@@ -202,9 +206,11 @@ def match(request,user_id):
         match_guy.request.add(user_name)
         Userinfo.objects.get(id=user_id).notify()
         Userinfo.objects.get(id=user_id).save()
-        return render(request,'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
+        return render(request,'tinder/profile.html', {'comments': comments,'pic': pic,'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
 def Unmatched(request,user_id):
     Username = Userinfo.objects.get(name=request.user.username)
+    pic = Profilepic.objects.get(user=user_id)
+    comments = Comment.objects.filter(post=request.user.id)
     match_guy = Userinfo.objects.get(id=user_id)
     Url_list = [Username.name, match_guy.name]
     Url_list_sort = sorted(Url_list)
@@ -216,12 +222,12 @@ def Unmatched(request,user_id):
         match_guy.request.remove(remove_match)
         Userinfo.objects.get(id=user_id).denotify()
         Userinfo.objects.get(id=user_id).save()
-        return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
+        return render(request, 'tinder/profile.html', {'comments': comments,'pic': pic,'name': Userinfo.objects.get(name=request.user.username),
                                                        'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                        'test': Userinfo.objects.get(
                                                            name=request.user.username).match.all(),
                                                        'profile': Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
-    return render(request, 'tinder/profile.html', {'name': Userinfo.objects.get(name=request.user.username),
+    return render(request, 'tinder/profile.html', {'comments': comments,'pic': pic,'name': Userinfo.objects.get(name=request.user.username),
                                                    'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
                                                    'test': Userinfo.objects.get(name=request.user.username).match.all(),
                                                     'profile': Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})

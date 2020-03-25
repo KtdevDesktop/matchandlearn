@@ -162,7 +162,14 @@ bg{
         </div>
         {% else %}
         <form method="post" style="margin-top: 1.3em;">
-          {{ comment_form.as_p }}
+          <p><label for="id_comment">Comment:</label> <input class="form-control" type="text" name="comment" maxlength="500" required id="id_comment"></p>
+            <p><label for="id_star">Choose your score:</label> <select class="form-control" name="star" id="id_star">
+            <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select></p>
           {% csrf_token %}
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
