@@ -60,13 +60,15 @@ bg{
 
 <ul>
   <li><a href="/">Home</a></li>
-  <li><a profile = "Students and Tutor list" href="{% url 'tinder:students_list' profile.id%}">Students and Tutor list</a></li>
-    <li ><a profile = "Match request" href="{% url 'tinder:match_request' profile.id %}" {% if profile.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if profile.match_request > 0 %}<span profile= "value_notificate" class="badge">{{ profile.match_request }}</span>{% endif %}</a></li>
-    <li><a profile = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
+
+  <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' profile.id %}">Students and Tutor list</a></li>
+    <li ><a name = "Match request" href="{% url 'tinder:match_request' profile.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
+    <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
     <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
-    <li style="float:right"><a href="/{{ profile.id }}/your_subject">Profile : {{ user.first_profile }}</a></li>
+    <li style="float:right"><a href="/{{ profile.id }}/your_subject">Profile : {{ profile.first_name }}</a></li>
 </ul>
+
 <head>
      <h2>id :{{ profile.profile }}</h2>
     <p id="fullprofile_id">First profile: {{ profile.fullprofile }}</p>
