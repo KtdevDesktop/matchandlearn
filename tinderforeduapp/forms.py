@@ -46,11 +46,7 @@ class AdditionalForm(forms.ModelForm):
         fields = ('school',)
 class Editprofileform(forms.ModelForm):
 
-    fullname = forms.CharField(max_length=100)
-    lastname = forms.CharField(max_length=100)
-    age = forms.CharField(max_length=100)
-    school = forms.CharField(max_length=100)
-    bio = forms.CharField(max_length=100)
+
     class Meta:
         model = Userinfo
         fields = [ 'fullname', 'lastname', 'age', 'school','bio', ]
