@@ -1,5 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 15px;
+  text-decoration: none;
+
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+.notification {
+      background-color: #555;
+      color: white;
+      text-decoration: none;
+      padding: 15px 26px;
+      position: relative;
+      display: inline-block;
+      border-radius: 2px;
+    }
+
+    .notification:hover {
+      background: red;
+    }
+
+    .notification .badge {
+      position: absolute;
+      top: 12px;
+      right: 1px;
+      padding: 3px 5px;
+      border-radius: 40%;
+      background: red;
+      color: white;
+    }
+bg{
+    background-position:center;
+}
+</style>
+
+<ul>
+  <li><a href="/">Home</a></li>
+  <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
+    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
+    <li><a name = "About us" href="{% url 'tinder:aboutus' %}">About</a></li>
+    <li><a name = "Chat" href="">Chat</a></li>
+    <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
+    <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
+    <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
+    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
+</ul>
 <body>
 
      {% for key,value in list_match.items %}
