@@ -134,6 +134,7 @@ def adddata(request):
 
 def home_page(request):
     """search here"""
+    select_sub = []
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
         return HttpResponseRedirect('/login')
     if Userinfo.objects.get(name=request.user.username).school == '':
@@ -149,10 +150,10 @@ def home_page(request):
                                                      schoolkey=stringforschool(request.POST['location_school']))
         else:
             select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub)
-        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": request.POST['subject_find']})
+        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "search_size": len(select_sub), "what_sub": request.POST['subject_find']})
     close_old_connections()
     db.connection.close()
-    return render(request,'tinder/home.html',{ 'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
+    return render(request,'tinder/home.html',{ 'name':Userinfo.objects.get(name=request.user.username), "search_size": len(select_sub),'test':Userinfo.objects.get(name=request.user.username).request.all()})
 def select_delete(request,user_id):
     User1 = Userinfo.objects.get(id=user_id)
     modelget = get_object_or_404(Userinfo, id=user_id)

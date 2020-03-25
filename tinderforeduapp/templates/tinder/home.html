@@ -1,5 +1,5 @@
 <!DOCTYPE html> {% load static %}
-<html lang="en">
+<html  >
 <style>
 ul {
   list-style-type: none;
@@ -58,9 +58,13 @@ bg{
 </style>
 <head>
     {% if user.is_authenticated %}
-    <title>Match-and-Learn</title>
-
-<ul>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v4.12.3, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <meta name="description" content="Web Builder Description">
+  <title>Match and Learn</title>
+    <ul>
   <li><a href="/">Home</a></li>
   <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
     <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
@@ -71,48 +75,96 @@ bg{
     <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
     <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
 </ul>
-    <img src="{% static 'images/logo.png' %}" width="1544" height="500">
-   <p>search for some one you're looking for</p>
-
-    <form method="POST">
-        <label>
-        Select gender :
-    <select name="filter" >
-        <option value="" selected="">Select gender</option>
-        <option value="male">male</option>
-        <option value="female">female</option>
-        <option value="orther">orther</option>
-    </select>
-         </label>
-    <label>
-        School :
-        <input name="location_school" id="location_school_id">
-    </label>
-    </br>
-        <label>
-            Enter a Subject :
-        <input name="subject_find" id="subject_find_id" placeholder="Enter a subject" />
-        <input name="subject_find-submit" type="submit" value="search">
-        {% csrf_token %}
-            </label>
-
-    </form>
-    {% else %}
-        <meta http-equiv="Refresh" content="0.5; url=/login/" />
-    {% endif %}
+  <link rel="stylesheet" href="{% static 'assets/web/assets/mobirise-icons/mobirise-icons.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap-grid.min.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap-reboot.min.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/tether/tether.min.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/socicon/css/styles.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/theme/css/style.css'%}">
+  <link rel="preload" as="style" href="{% static 'assets/mobirise/css/mbr-additional.css'%}"><link rel="stylesheet" href="{% static 'assets/mobirise/css/mbr-additional.css'%}" type="text/css">
+  
 </head>
 <body>
-<h1>{{ what_sub }}</h1>
-<table id = "find_result">
-{% for select in search_result %}
-    <tr><td>{{ forloop.counter }}:<a href="/{{ select.id }}/profile">{{ select.name }}</a></td></tr>
-{% endfor %}
-</table>
+  <section class="header15 cid-rUf8xEKEFH mbr-fullscreen" id="header15-f">
+      <div class="container align-right">
+        <div class="row">
+            <div class="mbr-white col-lg-8 col-md-7 content-container">
+                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1">SEARCH FOR SOMEONE YOU'RE LOOKING FOR</h1>
+            </div>
+            <div class="col-lg-4 col-md-5">
+                <div class="form-container">
+                    <div class="media-container-column">
+                        <!---Formbuilder Form--->
+                        <form action="/#searchresult" method="POST" class="mbr-form form-with-styler" >
+                            {% csrf_token %}
+                            <div class="dragArea row">
+                                <div class="col-md-12 form-group ">
+                                    <input type="text" name="subject_find" placeholder="Subject" class="form-control px-3 display-7" id="subject_find_id">
+                                </div>
+                                <div class="col-md-12 form-group ">
+                                    <input type="text" name="location_school" placeholder="Location" class="form-control px-3 display-7" id="location_school_id">
+                                </div>
+                                <div class="col-md-12 form-group ">
+                                <select name="filter" class="form-control px-3 display-7">
+                                    <option value="" selected="">Select gender</option>
+                                    <option value="male">male</option>
+                                    <option value="female">female</option>
+                                    <option value="orther">orther</option>
+                                </select>
+                                </div>
+                                <div class="col-md-12 input-group-btn">
+                                    <button type="submit" class="btn btn-secondary btn-form display-4">Search</button>
+                                </div>
+                            </div>
+                        </form><!---Formbuilder Form--->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
 
-{% for test in test %}
+  {% else %}
+        <meta http-equiv="Refresh" content="0.5; url=/login/" />
+    {% endif %}
+{% if search_size != 0 %}
+<section class="team1 cid-rUfabmSprG" id="team1-h">
+      <div id="searchresult" class="container align-center">
+        <h2 class="pb-3 mbr-fonts-style mbr-section-title display-2">
+            YOUR SEARCH FOR : {{ what_sub }}</h2>
+        <h3 class="pb-5 mbr-section-subtitle mbr-fonts-style mbr-light display-5">THIS IS A LIST OF PEOPLE THAT MATCH YOUR REQUEST<br>CLICK ON THEIR PROFILE TO VIEW MORE INFO</h3>
+          <div class="row media-row">
+            {% for select in search_result %}
+              <div class="team-item col-lg-3 col-md-6">
+                <div class="item-image">
+                    <img src="{% static 'assets/images/face3.jpg'%}" alt="" title="">
+                </div>
+                <div class="item-caption py-3">
+                    <div class="item-name px-2">
+                        <p class="mbr-fonts-style display-5">
+                            <a href="/{{ select.id }}/profile">{{ select.fullname }} {{ select.lastname }}</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+    </div>
+</section>
+{% endif %}
+  {% for test in test %}
     <p>this user want to match you :{{ test.request_list }}</p>
 {% endfor %}
 
 
+  <script src="{% static 'assets/web/assets/jquery/jquery.min.js'%}"></script>
+  <script src="{% static 'assets/popper/popper.min.js'%}"></script>
+  <script src="{% static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'assets/tether/tether.min.js'%}"></script>
+  <script src="{% static 'assets/smoothscroll/smooth-scroll.js'%}"></script>
+  <script src="{% static 'assets/theme/js/script.js'%}"></script>
+  <script src="{% static 'assets/formoid/formoid.min.js'%}"></script>
+  
+  
 </body>
 </html>
