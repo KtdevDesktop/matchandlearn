@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> {% load static %}
 <html lang="en">
 
 <style>
@@ -69,6 +69,7 @@ bg{
 </ul>
 <head>
     <h1>Enter your good subject</h1>
+   <img src="{{ pic.images.url }}" >
      <h2>id :{{ name.name }}</h2>
     <p id="fullname_id">First name: {{ name.fullname }}</p>
     <p id="lastname_id">Last name: {{ name.lastname }}</p>

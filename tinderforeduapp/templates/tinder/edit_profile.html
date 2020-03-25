@@ -76,12 +76,13 @@
     <h2 class="h3 mb-3 font-weight-normal">Match and Learn</h2>
   <p>You can edit profile here.</br>Type info that you want to change and click Continue.</p>
     {% csrf_token %}
+    <img src="{{ pic.images.url }}" >
+    {{ formpic }}
     {% for field in form %}
       {% if forloop.counter0 < 4 %}
-      <input class="form-control" required id="{{ field.id_for_label }}" placeholder="{{ field.html_name|title }}" name="{{ field.html_name }}" type="text"/><p></p>
+      <input class="form-control" required id="{{ field.id_for_label }}" placeholder="{{ field.html_name|title }}" name="{{ field.html_name }}" type="text" value="{{ field.value }}"/><p></p>
     {% else %}
-      <select class="custom-select" name="bio" id="id_bio">
-   <option selected disabled>Gender</option>
+      <select class="custom-select" name="bio" id="id_bio" onselect="{{ form.bio.value }}">
     <option value="Male">Male</option>
     <option value="Female">Female</option>
     <option value="Other">Other</option>

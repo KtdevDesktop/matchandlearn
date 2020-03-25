@@ -77,7 +77,7 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
 
 def your_subject_page(request,user_id):
     User = Userinfo.objects.get(name=request.user.username)
-    pic =Profilepic.objects.get(user=User)
+    pic = Profilepic.objects.get(user=User)
     if request.POST.get('subject_good'):
         subject = Subject.objects.create(subject_name=request.POST['subject_good'],subject_keep=stringforsearch(request.POST['subject_good']))
         U1=Userinfo.objects.get(name=request.user.username)
