@@ -64,28 +64,76 @@ bg{
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <meta name="description" content="Web Builder Description">
   <title>Match and Learn</title>
-    <ul>
-  <li><a href="/">Home</a></li>
-  <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
-    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
-    <li><a name = "About us" href="{% url 'tinder:aboutus' %}">About</a></li>
-    <li><a name = "Chat" href="">Chat</a></li>
-    <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
-    <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
-    <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
-    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
-</ul>
   <link rel="stylesheet" href="{% static 'assets/web/assets/mobirise-icons/mobirise-icons.css'%}">
   <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css'%}">
   <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap-grid.min.css'%}">
   <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap-reboot.min.css'%}">
   <link rel="stylesheet" href="{% static 'assets/tether/tether.min.css'%}">
   <link rel="stylesheet" href="{% static 'assets/socicon/css/styles.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/dropdown/css/style.css'%}">
   <link rel="stylesheet" href="{% static 'assets/theme/css/style.css'%}">
   <link rel="preload" as="style" href="{% static 'assets/mobirise/css/mbr-additional.css'%}"><link rel="stylesheet" href="{% static 'assets/mobirise/css/mbr-additional.css'%}" type="text/css">
   
 </head>
 <body>
+  <section class="menu cid-rUfEc7AVWo" once="menu" id="menu1-k">
+      <nav class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-fixed-top navbar-toggleable-sm">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        <div class="menu-logo">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                    <a href="{% url 'tinder:home' %}">
+                         <img src="{% static 'img/logo.png'%}" alt="Match and Learn" style="height: 3.8rem;">
+                    </a>
+                </span>
+                <span class="navbar-caption-wrap">
+                    <a class="navbar-caption text-white display-4" href="{% url 'tinder:home' %}">
+                        Match and Learn
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav nav-dropdown" data-app-modern-menu="true">
+                <li class="nav-item">
+                    <a class="nav-link link text-white display-4" href="{% url 'tinder:students_list' name.id%}">
+                        Students and Tutor list
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link text-white display-4" name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Student request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link text-white display-4" href="{% url 'tinder:aboutus' %}">
+                        About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link text-white display-4" href="{% url 'tinder:privacy' %}">
+                        Privacy Policy
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link text-white display-4" href="{% url 'tinder:logout' %}">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+            <div class="navbar-buttons mbr-section-btn">
+                <a class="btn btn-sm btn-primary display-4" href="/{{ name.id }}/your_subject">
+                    Profile : {{ user.first_name }}
+                </a>
+            </div>
+        </div>
+    </nav>
+</section>
   <section class="header15 cid-rUf8xEKEFH mbr-fullscreen" id="header15-f">
       <div class="container align-right">
         <div class="row">
@@ -128,7 +176,8 @@ bg{
   {% else %}
         <meta http-equiv="Refresh" content="0.5; url=/login/" />
     {% endif %}
-{% if search_size != 0 %}
+  {% if sendPOST == 1 %}
+  {% if search_size != 0 %}
 <section class="team1 cid-rUfabmSprG" id="team1-h">
       <div id="searchresult" class="container align-center">
         <h2 class="pb-3 mbr-fonts-style mbr-section-title display-2">
@@ -151,7 +200,16 @@ bg{
           </div>
     </div>
 </section>
+  {% else %}
+  <section class="team1 cid-rUfabmSprG" id="team1-h">
+      <div id="searchresult" class="container align-center">
+        <h2 class="pb-3 mbr-fonts-style mbr-section-title display-2">
+            YOUR SEARCH FOR : {{ what_sub }}</h2>
+        <h3 class="pb-5 mbr-section-subtitle mbr-fonts-style mbr-light display-5">LOOK LIKE YOU'RE SEARCHING FOR {{ what_sub }}<br>UNFORTUNATELY, WE CAN'T FIND ANYONE WITH THIS SUBJECT. PLEASE TRY AGAIN</h3>
+    </div>
+</section>
 {% endif %}
+  {% endif %}
   {% for test in test %}
     <p>this user want to match you :{{ test.request_list }}</p>
 {% endfor %}
@@ -164,6 +222,9 @@ bg{
   <script src="{% static 'assets/smoothscroll/smooth-scroll.js'%}"></script>
   <script src="{% static 'assets/theme/js/script.js'%}"></script>
   <script src="{% static 'assets/formoid/formoid.min.js'%}"></script>
+  <script src="{% static 'assets/dropdown/js/nav-dropdown.js'%}"></script>
+  <script src="{% static 'assets/dropdown/js/navbar-dropdown.js'%}"></script>
+  <script src="{% static 'assets/touchswipe/jquery.touch-swipe.min.js'%}"></script>
   
   
 </body>
