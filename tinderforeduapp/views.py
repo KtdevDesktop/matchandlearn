@@ -227,9 +227,11 @@ def Unmatched(request,user_id):
                                                     'profile': Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
 def profile_accept(request,user_id):
     Username = Userinfo.objects.get(name=request.user.username)
+    pic = Profilepic.objects.get(user=user_id)
     match_guy = Userinfo.objects.get(id=user_id)
     Url_list = [Username.name, match_guy.name]
     Url_list_sort = sorted(Url_list)
+    comments = Comment.objects.filter(post=user_id)
     chat_room_name = Url_list_sort[0] + "_"+Url_list_sort[1]
     if request.POST.get('accept'):
         Username = Userinfo.objects.get(name=request.user.username)
@@ -247,7 +249,7 @@ def profile_accept(request,user_id):
         request_obj = Username.request.get(request_list=match_guy.name)
         Username.request.remove(request_obj)
         return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
-    return render(request,'tinder/profile_accept.html',{'chat_room_name':chat_room_name,'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'request': Username.request.get(request_list=match_guy.name)})
+    return render(request,'tinder/profile_accept.html',{'comments':comments,'pic':pic,'name': Userinfo.objects.get(name=request.user.username),'chat_room_name':chat_room_name,'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'request': Username.request.get(request_list=match_guy.name)})
 def students_list(request,user_id):
     match_list_id = Userinfo.objects.get(name=request.user.username).match.all()
     list_match = {}
