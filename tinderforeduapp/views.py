@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from .forms import SignUpForm, CommentForm, AdditionalForm, Editprofileform
-from .models import Userinfo, Subject,match_class,request_class, Comment, User,Profile
+from .forms import SignUpForm, CommentForm, AdditionalForm, Editprofileform,profilepicture
+from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.shortcuts import render
@@ -38,7 +38,9 @@ def signup(request):
             user.profile.college = form.cleaned_data.get('college')
             user.profile.age = form.cleaned_data.get('age')
             user.profile.bio = form.cleaned_data.get('bio')
-            Userinfo.objects.create(name=user.username, school=user.profile.college,schoolkey=stringforschool(user.profile.college), age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name,bio =user.profile.bio)
+            newuser = Userinfo.objects.create(name=user.username, school=user.profile.college,schoolkey=stringforschool(user.profile.college), age=user.profile.age, fullname=user.profile.first_name,lastname=user.profile.last_name,bio =user.profile.bio)
+            Profilepic.objects.create(user=newuser,images='default.png')
+            newuser.save()
             user.save()
             current_site = get_current_site(request)
             mail_subject = 'Please verify your email address.'
@@ -74,13 +76,15 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
         return HttpResponse('''Activation link is invalid! <META HTTP-EQUIV="Refresh" CONTENT="5;URL=/login">''')
 
 def your_subject_page(request,user_id):
+    User = Userinfo.objects.get(name=request.user.username)
+    pic =Profilepic.objects.get(user=User)
     if request.POST.get('subject_good'):
         subject = Subject.objects.create(subject_name=request.POST['subject_good'],subject_keep=stringforsearch(request.POST['subject_good']))
         U1=Userinfo.objects.get(name=request.user.username)
         U1.good_subject.add(subject)
         U1.save()
-        return render(request, 'tinder/your_subject.html', {'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
-    return render(request,'tinder/your_subject.html', {'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
+        return render(request, 'tinder/your_subject.html', {'pic':pic,'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
+    return render(request,'tinder/your_subject.html', {'pic':pic,'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
 def successlogin(request):
     if request.POST.get('login'):
         return render(request, 'tinder/home.html', {'name': request.user.username })
@@ -134,14 +138,11 @@ def adddata(request):
 
 def home_page(request):
     """search here"""
-    select_sub = []
-    sendPOST = 0
     if (Userinfo.objects.filter(name=request.user.username).count() == 0):
         return HttpResponseRedirect('/login')
     if Userinfo.objects.get(name=request.user.username).school == '':
         return HttpResponseRedirect('/adddata')
     if request.POST.get('subject_find'):
-        sendPOST = 1
         what_sub = stringforsearch(request.POST['subject_find'])
         if request.POST['filter'] != "" and request.POST['location_school'] !=" ":
             select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub,schoolkey=stringforschool(request.POST['location_school']),bio=request.POST['filter'])
@@ -152,10 +153,10 @@ def home_page(request):
                                                      schoolkey=stringforschool(request.POST['location_school']))
         else:
             select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub)
-        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "search_size": len(select_sub),'sendPOST' : sendPOST, "what_sub": request.POST['subject_find']})
+        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "what_sub": request.POST['subject_find']})
     close_old_connections()
     db.connection.close()
-    return render(request,'tinder/home.html',{ 'name':Userinfo.objects.get(name=request.user.username), "search_size": len(select_sub),'sendPOST':sendPOST,'test':Userinfo.objects.get(name=request.user.username).request.all()})
+    return render(request,'tinder/home.html',{ 'name':Userinfo.objects.get(name=request.user.username),'test':Userinfo.objects.get(name=request.user.username).request.all()})
 def select_delete(request,user_id):
     User1 = Userinfo.objects.get(id=user_id)
     modelget = get_object_or_404(Userinfo, id=user_id)
@@ -274,21 +275,20 @@ def watch_profile(request,user_id):
     return render(request,'tinder/watch_profile.html',{'profile':Userinfo.objects.get(id=user_id),'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
 
 def edit_profile(request,user_id):
+    User = Userinfo.objects.get(name=request.user.username)
+    Pic = Profilepic.objects.get(user= User)
     if request.method == "POST":
-        form = Editprofileform(request.POST,instance=request.user.profile)
-        if form.is_valid():
-            U1 = Userinfo.objects.get(id=user_id)
-            U1.fullname = form.cleaned_data.get('fullname')
-            U1.lastname = form.cleaned_data.get('lastname')
-            U1.school = form.cleaned_data.get('school')
-            U1.schoolkey = stringforschool(form.cleaned_data.get('school'))
-            U1.age = form.cleaned_data.get('age')
-            U1.bio = form.cleaned_data.get('bio')
-            U1.save()
+        form = Editprofileform(request.POST,instance=User)
+        formpic = profilepicture(request.POST,request.FILES,instance=Pic)
+        if form.is_valid() and formpic.is_valid():
+            form.save()
+            formpic.save()
             return HttpResponseRedirect(reverse('tinder:your_subject', args=(user_id,)))
+
     else:
-        form = Editprofileform()
-    return render(request,'tinder/edit_profile.html',{'form':form})
+        form = Editprofileform(instance=User)
+        formpic = profilepicture(instance=Pic)
+    return render(request,'tinder/edit_profile.html',{"pic":Pic,'form':form,'formpic':formpic})
 def stringforsearch(keyword):
     keyword = keyword.lower()
     keyword = keyword.replace(' ', '')

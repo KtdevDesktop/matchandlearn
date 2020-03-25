@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Comment, Userinfo, Profile
+from .models import Comment, Userinfo, Profile,Profilepic
 
 
 class SignUpForm(UserCreationForm):
@@ -45,6 +45,7 @@ class AdditionalForm(forms.ModelForm):
         model = Userinfo
         fields = ('school',)
 class Editprofileform(forms.ModelForm):
+
     fullname = forms.CharField(max_length=100)
     lastname = forms.CharField(max_length=100)
     age = forms.CharField(max_length=100)
@@ -54,3 +55,7 @@ class Editprofileform(forms.ModelForm):
         model = Userinfo
         fields = [ 'fullname', 'lastname', 'age', 'school','bio', ]
 
+class profilepicture(forms.ModelForm):
+    class Meta:
+        model = Profilepic
+        fields = ['images']

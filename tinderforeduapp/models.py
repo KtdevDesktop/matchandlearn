@@ -75,6 +75,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+class Profilepic(models.Model):
+    user = models.OneToOneField(Userinfo, on_delete=models.CASCADE)
+    images = models.ImageField(default='default.png',upload_to='media')
+
 
 @receiver(post_save, sender=User)
 def update_profile_signal(sender, instance, created, **kwargs):
