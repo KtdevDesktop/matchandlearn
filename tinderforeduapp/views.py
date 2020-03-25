@@ -77,14 +77,15 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
 
 def your_subject_page(request,user_id):
     User = Userinfo.objects.get(name=request.user.username)
+    comments = Comment.objects.filter(post=request.user.id)
     pic = Profilepic.objects.get(user=User)
     if request.POST.get('subject_good'):
         subject = Subject.objects.create(subject_name=request.POST['subject_good'],subject_keep=stringforsearch(request.POST['subject_good']))
         U1=Userinfo.objects.get(name=request.user.username)
         U1.good_subject.add(subject)
         U1.save()
-        return render(request, 'tinder/your_subject.html', {'pic':pic,'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
-    return render(request,'tinder/your_subject.html', {'pic':pic,'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
+        return render(request, 'tinder/your_subject.html', {'comments': comments,'pic':pic,'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all()})
+    return render(request,'tinder/your_subject.html', {'comments': comments,'pic':pic,'name': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(name=request.user.username).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all()})
 def successlogin(request):
     if request.POST.get('login'):
         return render(request, 'tinder/home.html', {'name': request.user.username })

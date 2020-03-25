@@ -1,61 +1,5 @@
 <!DOCTYPE html> {% load static %}
-<html  >
-<style>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 15px;
-  text-decoration: none;
-
-}
-
-li a:hover:not(.active) {
-  background-color: #111;
-}
-
-.active {
-  background-color: #4CAF50;
-}
-.notification {
-      background-color: #555;
-      color: white;
-      text-decoration: none;
-      padding: 15px 26px;
-      position: relative;
-      display: inline-block;
-      border-radius: 2px;
-    }
-
-    .notification:hover {
-      background: red;
-    }
-
-    .notification .badge {
-      position: absolute;
-      top: 12px;
-      right: 1px;
-      padding: 3px 5px;
-      border-radius: 40%;
-      background: red;
-      color: white;
-    }
-bg{
-    background-position:mid;
-}
-</style>
+<html>
 <head>
     {% if user.is_authenticated %}
   <meta charset="UTF-8">
@@ -186,15 +130,17 @@ bg{
           <div class="row media-row">
             {% for key,value in infoma.items %}
               <div class="team-item col-lg-3 col-md-6">
+                  <a href="/{{ key.id }}/profile">
                 <div class="item-image">
-                    <img src="{{ value.images.url }}" >
+                    <img src="{{ value.images.url }}">
                 </div>
                 <div class="item-caption py-3">
                     <div class="item-name px-2">
                         <p class="mbr-fonts-style display-5">
-                            <a href="/{{ key.id }}/profile">{{ key.fullname }} {{ key.lastname }}</a></p>
+                            {{ key.fullname }} {{ key.lastname }}</p>
                     </div>
                 </div>
+                      </a>
             </div>
             {% endfor %}
           </div>

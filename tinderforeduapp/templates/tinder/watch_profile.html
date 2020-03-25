@@ -60,17 +60,17 @@ bg{
 
 <ul>
   <li><a href="/">Home</a></li>
-  <li><a name = "Students and Tutor list" href="{% url 'tinder:students_list' name.id%}">Students and Tutor list</a></li>
-    <li ><a name = "Match request" href="{% url 'tinder:match_request' name.id %}" {% if name.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if name.match_request > 0 %}<span name= "value_notificate" class="badge">{{ name.match_request }}</span>{% endif %}</a></li>
-    <li><a name = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
+  <li><a profile = "Students and Tutor list" href="{% url 'tinder:students_list' profile.id%}">Students and Tutor list</a></li>
+    <li ><a profile = "Match request" href="{% url 'tinder:match_request' profile.id %}" {% if profile.match_request > 0 %}class="notification"{% endif %}><span>Match request</span>{% if profile.match_request > 0 %}<span profile= "value_notificate" class="badge">{{ profile.match_request }}</span>{% endif %}</a></li>
+    <li><a profile = "Privacy Policy" href="{% url 'tinder:privacy' %}">Privacy Policy</a></li>
     <li style="float:right"><a href="{% url 'tinder:logout' %}">Logout</a></li>
     <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
-    <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
+    <li style="float:right"><a href="/{{ profile.id }}/your_subject">Profile : {{ user.first_profile }}</a></li>
 </ul>
 <head>
-     <h2>id :{{ profile.name }}</h2>
-    <p id="fullname_id">First name: {{ profile.fullname }}</p>
-    <p id="lastname_id">Last name: {{ profile.lastname }}</p>
+     <h2>id :{{ profile.profile }}</h2>
+    <p id="fullprofile_id">First profile: {{ profile.fullprofile }}</p>
+    <p id="lastprofile_id">Last profile: {{ profile.lastprofile }}</p>
     <p id="age_id">age: {{ profile.age }}</p>
      <p id="school_id">school: {{profile.school }}</p>
     <p id ="bio">gender : {{ profile.bio }}</p>
@@ -78,7 +78,7 @@ bg{
 <body>
      <form action="{% url 'tinder:watch_profile' profile.id %}" method="post">
          {% csrf_token %}
-    <button name="unmatch" value="unmatch" >unmatched</button>
+    <button profile="unmatch" value="unmatch" >unmatched</button>
     </form>
      <div class="container">
   <div class="row">
@@ -113,7 +113,7 @@ bg{
         {% for comment in comments %}
         <div class="comments" style="padding: 10px;">
           <p class="font-weight-bold">
-            {{ comment.name }}
+            {{ comment.profile }}
             <span class=" text-muted font-weight-normal">
               {{ comment.created_on }}
             </span>
