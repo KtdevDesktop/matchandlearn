@@ -72,10 +72,32 @@ li a:hover:not(.active) {
 .button2 {background-color: #008CBA;} /* Blue */
 .button3 {background-color: #f44336;} /* Red */
 .button4 {background-color: #e7e7e7; color: black;} /* Gray */
+.myDiv {
+    width: auto;
+    height: auto;
+    border: 5px solid rgb(57, 219, 222);
+    transition: all 1s;
+    background-color: rgb(202, 241, 196);
+}
+.subDiv {
+
+    text-align: left;
+    cursor: pointer;
+}
+.myDiv:hover .subDiv {
+    color: #82e185;
+    transition: all 1s;
+}
+.myDiv:hover {
+    border: 10px solid rgb(195, 241, 255);
+}
 
 bg{
     background-position:center;
 }
+    h1 { color: #009ef8; font-family: 'Raleway',sans-serif; font-size: 30px; font-weight: 500;  margin: 0 0 24px; }
+    p { color: #009ef8; font-family: 'Raleway',sans-serif; font-size: 18px; font-weight: 500;  margin: 0 0 24px; }
+
 </style>
 
 <ul>
@@ -89,19 +111,23 @@ bg{
     <li style="float:right"><a href="{% url 'tinder:faq' %}">Help</a></li>
     <li style="float:right"><a href="/{{ name.id }}/your_subject">Profile : {{ user.first_name }}</a></li>
 </ul>
+
 <body>
 
      {% for key,value in list_match.items %}
 
             <form method="post" action="{% url 'chat:room' value %}" target="_blank">
-            <div class="w3-display-container w3-white" >
-                <div class="w3-container w3-teal" onclick="location.href='{% url 'tinder:watch_profile' key.id %}'"  ><h1>{{ key.fullname }} {{ key.lastname }}</h1><p>Gender: {{ key.bio }} <p/><p>Age: {{ key.age }} <p/></div>
+                <div class ="myDiv">
+                <div class="subDiv"  onclick="location.href='{% url 'tinder:watch_profile' key.id %}'"><h1> {{ key.fullname }} {{ key.lastname }}</h1><p> Gender: {{ key.bio }} <p/><p> Age: {{ key.age }} <p/></div>
 
     {% csrf_token %}
+                <div class="w3-display-container w3-white" >
                 <div class="w3-display-bottomright"><button class="button button4" name="room" value="room" >chat room</button></div></div>
+                    </div>
             </form>
     {% endfor %}
 
 
 </body>
+
 </html>

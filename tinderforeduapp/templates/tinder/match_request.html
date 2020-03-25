@@ -57,6 +57,26 @@ li a:hover:not(.active) {
 bg{
     background-position:center;
 }
+    .myDiv {
+    width: auto;
+    height: auto;
+    border: 5px solid rgb(57, 219, 222);
+    transition: all 1s;
+    background-color: rgb(202, 241, 196);
+}
+.subDiv {
+
+    text-align: left;
+    cursor: pointer;
+}
+.myDiv:hover .subDiv {
+    color: #82e185;
+    transition: all 1s;
+}
+.myDiv:hover {
+    border: 10px solid rgb(195, 241, 255);
+}
+
 </style>
 
 <ul>
@@ -74,8 +94,9 @@ bg{
      <table id="good_subject_table">
     <form action="{% url 'tinder:match_request' name.id %}" method="post">
     {% for list_match in list_match %}
-
-        <div class="w3-container w3-teal" onclick='location.href="/{{ list_match.id }}/profile_accept"'><h1>{{ list_match.fullname }} {{ list_match.lastname }}</h1><p>Gender : {{ list_match.bio }}</p><p> age: {{ list_match.age  }}</p></div></td>
+        <div class="myDiv">
+        <div class="subDiv" onclick='location.href="/{{ list_match.id }}/profile_accept"'><h1>{{ list_match.fullname }} {{ list_match.lastname }}</h1><p>Gender : {{ list_match.bio }}</p><p> age: {{ list_match.age  }}</p></div></td>
+        </div>
     {% endfor %}
 
          {% csrf_token %}
