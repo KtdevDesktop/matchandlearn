@@ -15,10 +15,12 @@ class Subject(models.Model):
 class request_class(models.Model):
     request_list = models.TextField(max_length=200,blank=True)
     request_message = models.TextField(max_length=600,blank=True)
+    whorecive = models.TextField(max_length=200,blank=True)
     def __str__(self):
         return self.request_list
 class match_class(models.Model):
     match = models.TextField(max_length=200,blank=True)
+    youself = models.TextField(max_length=200,blank=True)
     def __str__(self):
         return self.match
 

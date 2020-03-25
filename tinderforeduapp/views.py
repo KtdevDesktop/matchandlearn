@@ -202,7 +202,7 @@ def match(request,user_id):
     Url_list_sort = sorted(Url_list)
     Url_chat = Url_list_sort[0] + "_"+Url_list_sort[1]
     if request.method == "POST":
-        user_name = request_class.objects.create(request_list=Username.name,request_message=request.POST['text_request'])
+        user_name = request_class.objects.create(request_list=Username.name,request_message=request.POST['text_request'],whorecive=match_guy.name)
         match_guy.request.add(user_name)
         Userinfo.objects.get(id=user_id).notify()
         Userinfo.objects.get(id=user_id).save()
@@ -218,7 +218,7 @@ def Unmatched(request,user_id):
     if request.POST.get('Unmatched'):
         Username = Userinfo.objects.get(name=request.user.username)
         match_guy = Userinfo.objects.get(id=user_id)
-        remove_match = match_guy.request.get(request_list=Username.name)
+        remove_match = match_guy.request.get(request_list=Username.name,whorecive=match_guy.name)
         match_guy.request.remove(remove_match)
         Userinfo.objects.get(id=user_id).denotify()
         Userinfo.objects.get(id=user_id).save()
@@ -242,17 +242,17 @@ def profile_accept(request,user_id):
     if request.POST.get('accept'):
         Username = Userinfo.objects.get(name=request.user.username)
         match_guy = Userinfo.objects.get(id=user_id)
-        match_obj = match_class.objects.create(match=match_guy.name)
+        match_obj = match_class.objects.create(match=match_guy.name,youself=Username.name)
         Username.match.add(match_obj)
-        request_obj = Username.request.get(request_list=match_guy.name)
+        request_obj = Username.request.get(request_list=match_guy.name,whorecive=Username.name)
         Username.request.remove(request_obj)
-        match_obj2 = match_class.objects.create(match=Username.name)
+        match_obj2 = match_class.objects.create(match=Username.name,youself=match_guy.name)
         match_guy.match.add(match_obj2)
         return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
     if request.POST.get('decline'):
         Username = Userinfo.objects.get(name=request.user.username)
         match_guy = Userinfo.objects.get(id=user_id)
-        request_obj = Username.request.get(request_list=match_guy.name)
+        request_obj = Username.request.get(request_list=match_guy.name,whorecive=Username.name)
         Username.request.remove(request_obj)
         return HttpResponseRedirect(reverse('tinder:match_request', args=(Username.id,)))
     return render(request,'tinder/profile_accept.html',{'comments':comments,'pic':pic,'name': Userinfo.objects.get(name=request.user.username),'chat_room_name':chat_room_name,'name':Userinfo.objects.get(name=request.user.username),'profile': Userinfo.objects.get(id=user_id),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'request': Username.request.get(request_list=match_guy.name)})
@@ -289,9 +289,9 @@ def watch_profile(request,user_id):
     if request.POST.get('unmatch'):
         Username = Userinfo.objects.get(name=request.user.username)
         match_guy = Userinfo.objects.get(id=user_id)
-        unmatch_obj= Username.match.get(match=match_guy.name)
+        unmatch_obj= Username.match.get(match=match_guy.name,youself=Username.name)
         Username.match.remove(unmatch_obj)
-        unmatch_obj2= match_guy.match.get(match=Username.name)
+        unmatch_obj2= match_guy.match.get(match=Username.name,youself=match_guy.name)
         match_guy.match.remove(unmatch_obj2)
         return HttpResponseRedirect(reverse('tinder:students_list', args=(Username.id,)))
     return render(request,'tinder/watch_profile.html',{'pic':pic,'name':Userinfo.objects.get(name=request.user.username),'profile':Userinfo.objects.get(id=user_id),'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
