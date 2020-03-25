@@ -184,15 +184,15 @@ bg{
             YOUR SEARCH FOR : {{ what_sub }}</h2>
         <h3 class="pb-5 mbr-section-subtitle mbr-fonts-style mbr-light display-5">THIS IS A LIST OF PEOPLE THAT MATCH YOUR REQUEST<br>CLICK ON THEIR PROFILE TO VIEW MORE INFO</h3>
           <div class="row media-row">
-            {% for select in search_result %}
+            {% for key,value in infoma.items %}
               <div class="team-item col-lg-3 col-md-6">
                 <div class="item-image">
-                    <img src="{% static 'assets/images/face3.jpg'%}" alt="" title="">
+                    <img src="{{ value.images.url }}" >
                 </div>
                 <div class="item-caption py-3">
                     <div class="item-name px-2">
                         <p class="mbr-fonts-style display-5">
-                            <a href="/{{ select.id }}/profile">{{ select.fullname }} {{ select.lastname }}</a></p>
+                            <a href="/{{ key.id }}/profile">{{ key.fullname }} {{ key.lastname }}</a></p>
                     </div>
                 </div>
             </div>

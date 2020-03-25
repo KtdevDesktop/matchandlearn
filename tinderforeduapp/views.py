@@ -146,17 +146,26 @@ def home_page(request):
         return HttpResponseRedirect('/adddata')
     if request.POST.get('subject_find'):
         sendPOST = 1
+        infoma = {}
         what_sub = stringforsearch(request.POST['subject_find'])
         if request.POST['filter'] != "" and request.POST['location_school'] !=" ":
             select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub,schoolkey=stringforschool(request.POST['location_school']),bio=request.POST['filter'])
+            for key in select_sub:
+                infoma[key] = Profilepic.objects.get(user=key)
         elif request.POST['filter'] != "":
             select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub,bio=request.POST['filter'])
+            for key in select_sub:
+                infoma[key] = Profilepic.objects.get(user=key)
         elif request.POST['location_school'] != "":
             select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub,
                                                      schoolkey=stringforschool(request.POST['location_school']))
+            for key in select_sub:
+                infoma[key] = Profilepic.objects.get(user=key)
         else:
             select_sub = Userinfo.objects.filter(good_subject__subject_keep=what_sub)
-        return render(request, 'tinder/home.html', {'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "search_size": len(select_sub),'sendPOST' : sendPOST, "what_sub": request.POST['subject_find']})
+            for key in select_sub:
+                infoma[key] = Profilepic.objects.get(user=key)
+        return render(request, 'tinder/home.html', {'infoma':infoma,'name':Userinfo.objects.get(name=request.user.username),"search_result": select_sub, "search_size": len(select_sub),'sendPOST' : sendPOST, "what_sub": request.POST['subject_find']})
     close_old_connections()
     db.connection.close()
     return render(request,'tinder/home.html',{ 'name':Userinfo.objects.get(name=request.user.username), "search_size": len(select_sub),'sendPOST':sendPOST,'test':Userinfo.objects.get(name=request.user.username).request.all()})
