@@ -42,3 +42,4 @@ webencodings==0.5.1
 websocket-client==0.57.0
 websockets==3.2
 whitenoise==5.0.1
+Pillow
