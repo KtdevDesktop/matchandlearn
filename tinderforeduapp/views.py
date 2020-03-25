@@ -261,6 +261,7 @@ def students_list(request,user_id):
 def watch_profile(request,user_id):
     match_guy = Userinfo.objects.get(id=user_id)
     post = get_object_or_404(Userinfo, name=match_guy.name)
+    pic = Profilepic.objects.get(user=user_id)
     comments = post.comments.filter(active=True)
     new_comment = None
     if request.method == 'POST':
@@ -285,7 +286,7 @@ def watch_profile(request,user_id):
         unmatch_obj2= match_guy.match.get(match=Username.name)
         match_guy.match.remove(unmatch_obj2)
         return HttpResponseRedirect(reverse('tinder:students_list', args=(Username.id,)))
-    return render(request,'tinder/watch_profile.html',{'profile':Userinfo.objects.get(id=user_id),'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
+    return render(request,'tinder/watch_profile.html',{'pic':pic,'name':Userinfo.objects.get(name=request.user.username),'profile':Userinfo.objects.get(id=user_id),'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
 
 def edit_profile(request,user_id):
     User = Userinfo.objects.get(name=request.user.username)
