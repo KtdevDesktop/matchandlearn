@@ -116,8 +116,8 @@ bg{
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link link text-white display-4" href="{% url 'tinder:privacy' %}">
-                        Privacy Policy
+                    <a class="nav-link link text-white display-4" href="{% url 'tinder:faq' %}">
+                        Help
                     </a>
                 </li>
                 <li class="nav-item">
@@ -178,8 +178,8 @@ bg{
     {% endif %}
   {% if sendPOST == 1 %}
   {% if search_size != 0 %}
-<section class="team1 cid-rUfabmSprG" id="team1-h">
-      <div id="searchresult" class="container align-center">
+<section class="team1 cid-rUfabmSprG" id="searchresult">
+      <div class="container align-center">
         <h2 class="pb-3 mbr-fonts-style mbr-section-title display-2">
             YOUR SEARCH FOR : {{ what_sub }}</h2>
         <h3 class="pb-5 mbr-section-subtitle mbr-fonts-style mbr-light display-5">THIS IS A LIST OF PEOPLE THAT MATCH YOUR REQUEST<br>CLICK ON THEIR PROFILE TO VIEW MORE INFO</h3>
@@ -201,8 +201,8 @@ bg{
     </div>
 </section>
   {% else %}
-  <section class="team1 cid-rUfabmSprG" id="team1-h">
-      <div id="searchresult" class="container align-center">
+  <section class="team1 cid-rUfabmSprG" id="searchresult">
+      <div class="container align-center">
         <h2 class="pb-3 mbr-fonts-style mbr-section-title display-2">
             YOUR SEARCH FOR : {{ what_sub }}</h2>
         <h3 class="pb-5 mbr-section-subtitle mbr-fonts-style mbr-light display-5">LOOK LIKE YOU'RE SEARCHING FOR {{ what_sub }}<br>UNFORTUNATELY, WE CAN'T FIND ANYONE WITH THIS SUBJECT. PLEASE TRY AGAIN</h3>
@@ -213,8 +213,6 @@ bg{
   {% for test in test %}
     <p>this user want to match you :{{ test.request_list }}</p>
 {% endfor %}
-
-
   <script src="{% static 'assets/web/assets/jquery/jquery.min.js'%}"></script>
   <script src="{% static 'assets/popper/popper.min.js'%}"></script>
   <script src="{% static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
@@ -225,7 +223,5 @@ bg{
   <script src="{% static 'assets/dropdown/js/nav-dropdown.js'%}"></script>
   <script src="{% static 'assets/dropdown/js/navbar-dropdown.js'%}"></script>
   <script src="{% static 'assets/touchswipe/jquery.touch-swipe.min.js'%}"></script>
-  
-  
 </body>
 </html>
