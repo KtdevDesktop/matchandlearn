@@ -6,6 +6,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
+        if not Savechat.objects.filter(name=self.room_name).exists():
+            Savechat.objects.create(name=self.room_name, user1=self.room_name.split('_')[0],
+                                    user2=self.room_name.split('_')[1])
 
         # Join room group
         await self.channel_layer.group_add(
