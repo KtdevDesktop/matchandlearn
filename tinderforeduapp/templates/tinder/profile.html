@@ -139,6 +139,9 @@ bg{
         <div class="row">
             <div class="col-md-6">
                 <div class="expertise-item">
+                {% if already_match %}
+                    <p>you was send the request to this user or user was send the request to you</p>
+                {% else %}
                     {% if check %}
                     <form method="post" action="{% url 'tinder:unmatched' profile.id %}">
                         {% csrf_token %}
@@ -152,6 +155,7 @@ bg{
                         <button class="btn btn-primary"  name="match" value="match" >Match</button>
                     </form>
                     {% endif %}
+                {% endif %}
                 </div>
             </div>
         </div>

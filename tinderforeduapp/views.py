@@ -201,12 +201,22 @@ def match(request,user_id):
     Url_list = [Username.name, match_guy.name]
     Url_list_sort = sorted(Url_list)
     Url_chat = Url_list_sort[0] + "_"+Url_list_sort[1]
+    already_match = 0
     if request.method == "POST":
-        user_name = request_class.objects.create(request_list=Username.name,request_message=request.POST['text_request'],whorecive=match_guy.name)
-        match_guy.request.add(user_name)
-        Userinfo.objects.get(id=user_id).notify()
-        Userinfo.objects.get(id=user_id).save()
-        return render(request,'tinder/profile.html', {'comments': comments,'pic': pic,'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
+        if match_guy.request.filter(request_list=Username.name,whorecive=match_guy.name) or Username.request.filter(request_list=match_guy.name,whorecive=Username.name) :
+            already_match=1
+            return render(request, 'tinder/profile.html',
+                          {'already_match': already_match, 'comments': comments, 'pic': pic,
+                           'name': Userinfo.objects.get(name=request.user.username),
+                           'subject': Userinfo.objects.get(id=user_id).good_subject.all(),
+                           'test': Userinfo.objects.get(name=request.user.username).match.all(), 'check': 1,
+                           'profile': Userinfo.objects.get(id=user_id), 'chat_room_name': Url_chat})
+        else:
+            user_name = request_class.objects.create(request_list=Username.name,request_message=request.POST['text_request'],whorecive=match_guy.name)
+            match_guy.request.add(user_name)
+            Userinfo.objects.get(id=user_id).notify()
+            Userinfo.objects.get(id=user_id).save()
+            return render(request,'tinder/profile.html', {'already_match':already_match,'comments': comments,'pic': pic,'name': Userinfo.objects.get(name=request.user.username),'subject': Userinfo.objects.get(id=user_id).good_subject.all(),'test':Userinfo.objects.get(name=request.user.username).match.all(),'check':1,'profile':Userinfo.objects.get(id=user_id),'chat_room_name':Url_chat})
 def Unmatched(request,user_id):
     Username = Userinfo.objects.get(name=request.user.username)
     pic = Profilepic.objects.get(user=user_id)
