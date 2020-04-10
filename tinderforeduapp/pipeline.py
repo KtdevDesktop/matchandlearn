@@ -1,4 +1,4 @@
-from .models import Userinfo, Profilepic
+from .models import Userinfo, Profile_pic
 from django.contrib.auth.models import User
 from social_core.pipeline.user import get_username as social_get_username
 from datetime import date, datetime
@@ -35,7 +35,7 @@ def user_profile_db(backend, user, response, *args, **kwargs):
                                 fullname=(response.get('name')).split(" ")[0],
                                 lastname=(response.get('name')).split(" ")[1],
                                 bio=gender, fb_link=response.get('link'))
-        Profilepic.objects.create(user=user, images='default.png')
+        Profile_pic.objects.create(user=user, images='default.png')
 
 def get_username(strategy, details, backend, user=None, *args, **kwargs):
     result = social_get_username(strategy, details, backend, user=user, *args, **kwargs)

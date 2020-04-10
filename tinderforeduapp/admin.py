@@ -5,7 +5,7 @@ admin.site.register(Profile)
 admin.site.register(Userinfo)
 admin.site.register(Savechat)
 admin.site.register(Comment)
-admin.site.register(Profilepic)
+admin.site.register(Profile_pic)
 admin.site.register(match_class)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'comment', 'post', 'created_on', 'active')

@@ -13,7 +13,7 @@ from . import views as core_views
 app_name = 'tinder'
 urlpatterns = [
     path('', views.home_page, name='home'),
-    path('<int:user_id>/your_subject/', views.your_subject_page, name ='your_subject'),
+    path('<int:user_id>/your_subject/', views.personal_profile, name ='your_subject'),
     path('<int:user_id>/select_delete/', views.select_delete, name ='select_delete'),
     path('login/', LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(next_page='/login'), name="logout"),
@@ -22,7 +22,7 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     path('<int:user_id>/match/',views.match,name="match"),
     path('<int:user_id>/Unmatched/',views.Unmatched,name="unmatched"),
-    path('<int:user_id>/match_request/',views.match_request,name="match_request"),
+    path('<int:user_id>/match_request/', views.match_request_list, name="match_request"),
     path('<int:user_id>/profile_accept/',views.profile_accept,name="profile_accept"),
     path('<int:user_id>/students_list/',views.students_list,name="students_list"),
     path('<int:user_id>/watch_profile',views.watch_profile,name="watch_profile"),

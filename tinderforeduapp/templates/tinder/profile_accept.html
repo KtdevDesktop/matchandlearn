@@ -61,7 +61,7 @@ bg{
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>{{ profile.fullname }}'s Profile</title>
+    <title>{{ profile.firstname }}'s Profile</title>
     <!-- favicon -->
     <!-- web-fonts -->
     <link href="https://fonts.googleapis.com/css?family=Hind:300,400,500,600,700" rel="stylesheet">
@@ -103,11 +103,11 @@ bg{
 <div class="left-col-block blocks">
     <header class="header theiaStickySidebar">
         <div class="profile-img">
-            <h1>{{ profile.fullname }}'s Profile :</h1>
+            <h1>{{ profile.firstname }}'s Profile :</h1>
             <img src="{{ pic.images.url }}" class="img-responsive" alt=""/>
         </div>
         <div class="content">
-            <h1>{{ profile.fullname }} {{ profile.lastname }}</h1>
+            <h1>{{ profile.firstname }} {{ profile.lastname }}</h1>
             <div class="about-text">
                 <p id="age_id">age: {{ profile.age }}</p>
                 <p id="school_id">school: {{profile.school }}</p>
@@ -129,7 +129,7 @@ bg{
                 <div>
                     <h2>Make your difficult decisions</h2>
                     <h3>Do you want to accept this request?</h3>
-                    <h3>{{ profile.fullname }} leave a short message for you : {{ request.request_message }}</h3>
+                    <h3>{{ profile.firstname }} leave a short message for you : {{ request.request_message }}</h3>
                 </div>
             </div>
         </div>
